@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Home",
+    "url": "/",
+    "permission": ""
+  },
+  {
+    "name": "Write",
+    "url": "/write",
+    "permission": ""
+  },
+  {
+    "name": "File",
+    "url": "/file",
+    "permission": ""
+  },
+  {
+    "name": "Dashboard",
+    "url": "/dashboard",
+    "permission": ""
+  }
+]
