@@ -1,5 +1,5 @@
-import AreaChartOverview from "@/app/(main)/dashboard/overviewChart/Charts/AreaChart";
-import BarChartOverview from "@/app/(main)/dashboard/overviewChart/Charts/BarChart";
+import AreaChartOverview from "@/app/(main)/users/overviewChart/Charts/AreaChart";
+import BarChartOverview from "@/app/(main)/users/overviewChart/Charts/BarChart";
 
 export default function OverviewChart() {
   return (

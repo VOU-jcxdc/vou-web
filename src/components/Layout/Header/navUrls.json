@@ -5,18 +5,8 @@
     "permission": ""
   },
   {
-    "name": "Write",
-    "url": "/write",
-    "permission": ""
-  },
-  {
-    "name": "File",
-    "url": "/file",
-    "permission": ""
-  },
-  {
-    "name": "Dashboard",
-    "url": "/dashboard",
+    "name": "Users",
+    "url": "/users",
     "permission": ""
   }
 ]

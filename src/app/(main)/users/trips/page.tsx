@@ -1,7 +1,7 @@
 import { DataTable } from "@components/Table/DataTable";
 import Link from "next/link";
 
-import { columns, User } from "@/app/(main)/dashboard/trips/Components/Columns";
+import { columns, User } from "@/app/(main)/users/trips/Components/Columns";
 import { Button } from "@/components/ui/button";
 
 async function getUsers(): Promise<User[]> {

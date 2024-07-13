@@ -1,4 +1,4 @@
-import DashboardLoading from "@/app/(main)/dashboard/Components/DashboardLoading";
+import DashboardLoading from "@/app/(main)/users/Components/DashboardLoading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function DataCard({

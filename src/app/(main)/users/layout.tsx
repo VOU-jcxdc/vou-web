@@ -1,4 +1,4 @@
-import DashboardSidebar from "@/app/(main)/dashboard/Components/DashboardSidebar";
+import DashboardSidebar from "@/app/(main)/users/Components/DashboardSidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function MainLayout({

@@ -1,11 +1,11 @@
 import { DataTable } from "@components/Table/DataTable";
 import { Bike, CalendarDays,Car, Hash, MoreVertical } from "lucide-react";
 
-import DataCard from "@/app/(main)/dashboard/Components/DataCard";
+import DataCard from "@/app/(main)/users/Components/DataCard";
 import {
   columns,
   User,
-} from "@/app/(main)/dashboard/Components/OverviewColumns";
+} from "@/app/(main)/users/Components/OverviewColumns";
 import { Button } from "@/components/ui/button";
 import {
   Card,

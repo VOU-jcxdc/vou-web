@@ -4,8 +4,8 @@ import { DateRangePicker } from "@components/Picker/RangeDate/DateRangePicker";
 import { Banknote, HandCoins, Map, MapPin } from "lucide-react";
 import { RotateCcw } from "lucide-react";
 
-import RevenueBarChart from "@/app/(main)/dashboard/Components/Charts/RevenueBarChart";
-import DataCard from "@/app/(main)/dashboard/Components/DataCard";
+import RevenueBarChart from "@/app/(main)/users/Components/Charts/RevenueBarChart";
+import DataCard from "@/app/(main)/users/Components/DataCard";
 import { Button } from "@/components/ui/button";
 import useDatePicker from "@/hooks/zustand/useDatePicker";
 import formatDate from "@/lib/utils/functions/formatDate";

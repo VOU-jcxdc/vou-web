@@ -1,5 +1,4 @@
 import "@app/styles/globals.css";
-import "@app/styles/prosemirror.css";
 
 import NavDrawer from "@components/Layout/Drawer/NavDrawer";
 import ThemeProvider from "@components/Providers/ThemeProvider";

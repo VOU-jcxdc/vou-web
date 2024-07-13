@@ -1,9 +1,7 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import { BarChart } from "@tremor/react";
 
-import DashboardLoading from "@/app/(main)/dashboard/Components/DashboardLoading";
 import {
   Card,
   CardContent,

@@ -8,6 +8,7 @@ export async function signUpWithEmailAndPassword(data: {
   password: string;
   confirm: string;
 }) {
+  console.log(data);
   // const supabase = await createSupabaseAdmin();
   // const createResult = await supabase.auth.admin.createUser({
   //   email: data.email,
