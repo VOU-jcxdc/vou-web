@@ -1,59 +1,91 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown,MoreHorizontal } from "lucide-react";
+import { cva } from "class-variance-authority";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import formatDate from "@/lib/utils/functions/formatDate";
 
 export type User = {
   id: string;
-  name: string;
-  emaiL: string;
-  image: string;
-  lastSeen: string;
+  username: string;
+  role: string;
+  avatar: string;
+  phone: string;
+  createdAt: string;
 };
 
+const roleVariants = cva("border", {
+  variants: {
+    role: {
+      admin: "border-green-600 bg-green-100 text-green-900 hover:bg-green-100",
+      player: "border-blue-500 bg-blue-100 text-blue-900 hover:bg-blue-100",
+      brand:
+        "border-orange-600 bg-orange-100 text-orange-900 hover:bg-orange-100",
+    },
+  },
+  defaultVariants: {
+    role: "admin",
+  },
+});
 export const columns: ColumnDef<User>[] = [
   {
-    accessorKey: "name",
-    header: "Trip",
+    accessorKey: "id",
+    header: "ID",
   },
   {
-    accessorKey: "email",
-    header: "Customer",
+    accessorKey: "username",
+    header: "Username",
   },
   {
-    accessorKey: "lastSeen",
+    accessorKey: "phone",
+    header: "Phone",
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+    cell: ({ row }) => {
+      const role = row.original.role;
+
+      return (
+        <Badge variant="secondary" className={roleVariants({ role: "brand" })}>
+          {role}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "createdAt",
     header: ({ column }) => {
       return (
         <div className="flex w-32 items-center justify-center border-none">
           <Button
-            variant="outline"
-            className="border-none"
+            variant="ghost"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Time
+            Created At
             <ArrowUpDown className="ml-2 h-4 w-4" />
           </Button>
         </div>
       );
     },
     cell: ({ row }) => {
-      const date = new Date(row.getValue("lastSeen"));
+      const date = new Date(row.getValue("createdAt"));
       const formatted = formatDate(date);
 
       return (
         <div className="w-32 text-center">
-          {row.getValue("lastSeen") ? formatted : "Unknown"}
+          {row.getValue("createdAt") ? formatted : "__"}
         </div>
       );
     },
@@ -75,10 +107,12 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(user.id)}
             >
-              Copy trip ID
+              Copy user ID
             </DropdownMenuItem>
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/users/${user.id}`}>View user</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>Deactivate user</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

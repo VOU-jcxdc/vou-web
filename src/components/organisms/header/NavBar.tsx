@@ -17,23 +17,30 @@ import navUrls from "./navUrls.json";
 
 export default function NavBar() {
   const path = usePathname();
-  console.log(path);
 
   return (
     <NavigationMenu>
-      <NavigationMenuList className="h-fit w-fit px-3">
+      <NavigationMenuList className="h-[80px] w-fit px-3">
         {navUrls.map((navUrl, index: number) => (
           <NavigationMenuItem key={index}>
             <Link href={navUrl.url}>
-              <NavigationMenuLink className="hover:text-accent-foreground focus:text-accent-foreground relative h-10 w-fit text-nowrap rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent focus:bg-accent focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[active]:text-primary data-[state=open]:bg-accent/50">
-                {navUrl.name}
+              <NavigationMenuLink
+                className={cn(
+                  navUrl.url == path ||
+                    (navUrl.url !== "/" && path.startsWith(navUrl.url))
+                    ? "text-slate-50"
+                    : "hover:bg-accent",
+                  "hover:text-accent-foreground focus:text-accent-foreground relative h-10 w-fit text-nowrap rounded-full px-4 py-2 text-sm font-medium focus:bg-accent focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[active]:text-primary data-[state=open]:bg-accent/50"
+                )}
+              >
                 {(navUrl.url == path ||
                   (navUrl.url !== "/" && path.startsWith(navUrl.url))) && (
                   <motion.span
                     layoutId="underline"
-                    className="absolute -bottom-1.5 left-0 block h-[3px] w-full rounded-full bg-primary"
+                    className="absolute -z-10 top-0 block w-full h-full rounded-full bg-primary  focus:bg-primary/90 transition-colors"
                   />
                 )}
+                <span>{navUrl.name}</span>
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>

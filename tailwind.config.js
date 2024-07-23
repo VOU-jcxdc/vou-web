@@ -40,6 +40,10 @@ module.exports = {
           background: "hsl(var(--btn-background))",
           "background-hover": "hsl(var(--btn-background-hover))",
         },
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          muted: "hsl(var(--border-muted))",
+        },
         white: "var(--novel-white)",
         stone: {
           50: "var(--novel-stone-50)",

@@ -6,10 +6,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
-import { Cog,LogOut, User } from "lucide-react";
+import { Cog, LogOut, User } from "lucide-react";
 import Link from "next/link";
 
-import GeneratedAvatar from "@/components/mocules/generated-avatar";
+import GeneratedAvatar from "@/components/molecules/generated-avatar";
 
 export default function Dropdown() {
   return (

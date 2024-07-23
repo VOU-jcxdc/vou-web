@@ -15,7 +15,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-import navUrls from "../Header/navUrls.json";
+import navUrls from "../../organisms/header/navUrls.json";
 
 export default function BottomDrawer() {
   const path = usePathname();

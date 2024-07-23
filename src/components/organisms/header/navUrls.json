@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Users",
+    "url": "/users",
+    "permission": ""
+  },
+  {
+    "name": "Games",
+    "url": "/games",
+    "permission": ""
+  }
+]

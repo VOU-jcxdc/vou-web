@@ -12,6 +12,7 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import { Filter } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { Separator } from "../ui/separator";
 import { DataTablePagination } from "./Pagination";
 
 interface DataTableProps<TData, TValue> {
@@ -103,15 +105,20 @@ export function DataTable<TData, TValue>({
                 .getColumn(searchAttribute)
                 ?.setFilterValue(event.target.value)
             }
-            className="max-w-52 border border-[#E5E7EB]"
+            className="w-[200px] border border-[#E5E7EB] h-9"
           />
         )}
-
+        {/* <Button variant="outline" size="sm">
+          <Filter className="h-4 w-4 mr-2" />
+          <span>Role</span>
+          <Separator orientation="vertical" className="mx-2 h-4 bg-primary" />
+          <div className="text-primary">Admin, Player</div>
+        </Button> */}
         {/* Column visibility */}
         {isCollumnVisibilityEnabled && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button variant="outline" size="sm" className="ml-auto">
                 Columns
               </Button>
             </DropdownMenuTrigger>
