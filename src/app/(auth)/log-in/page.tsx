@@ -25,36 +25,34 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-// import GoogleOAuthForm from "../OAuth/GoogleOAuth";
 
-const FormSchema = z.object({
-  email: z.string().email(),
+const formSchema = z.object({
+  phone: z.string(),
   password: z.string().min(1, "Password is required"),
 });
+
+type FormInputs = z.infer<typeof formSchema>;
 
 export default function SignIn() {
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+  const form = useForm<FormInputs>({
+    resolver: zodResolver(formSchema),
   });
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const result = await signInWithEmailAndPassword(data);
-    const resultJson = JSON.parse(result);
+  async function onSubmit(data: FormInputs) {
+    // const result = await signInWithEmailAndPassword(data);
+    // const resultJson = JSON.parse(result);
 
-    if (resultJson?.data?.session) {
-      toast.success("Log in successfully.");
-      router.push("/");
-    } else if (resultJson?.error?.message) {
-      toast.error(resultJson.error.message);
-    } else {
-      router.push("/");
-    }
+    // if (resultJson?.data?.session) {
+    //   toast.success("Log in successfully.");
+    //   router.push("/");
+    // } else if (resultJson?.error?.message) {
+    //   toast.error(resultJson.error.message);
+    // } else {
+    //   router.push("/");
+    // }
+    router.push("/");
   }
 
   return (
@@ -74,16 +72,15 @@ export default function SignIn() {
             >
               <FormField
                 control={form.control}
-                name="email"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Phone</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="example@gmail.com"
-                        error={Boolean(form.formState.errors.email)}
+                        placeholder="+84 123 456 789"
+                        error={Boolean(form.formState.errors.phone)}
                         {...field}
-                        type="email"
                         onChange={field.onChange}
                       />
                     </FormControl>

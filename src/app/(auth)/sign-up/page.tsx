@@ -28,14 +28,10 @@ import { Input } from "@/components/ui/input";
 
 const FormSchema = z
   .object({
-    name: z.string().min(1, { message: "Name is a compulsory." }),
-    email: z.string().email(),
-    password: z.string().min(6, {
-      message: "Password is required.",
-    }),
-    confirm: z.string().min(6, {
-      message: "Password is required.",
-    }),
+    username: z.string().trim().min(1, { message: "Username is required" }),
+    phone: z.string().trim().min(1, "Phone is required"),
+    password: z.string().trim().min(6, "Password is required"),
+    confirm: z.string().trim().min(6, "Confirm password is required"),
   })
   .refine((data) => data.confirm === data.password, {
     message: "Password did not match",
@@ -50,15 +46,16 @@ export default function SignUp() {
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const result = await signUpWithEmailAndPassword(data);
-    const resultJson = JSON.parse(result);
+    // const result = await signUpWithEmailAndPassword(data);
+    // const resultJson = JSON.parse(result);
 
-    if (resultJson?.error?.message) {
-      toast.error(resultJson.error.message);
-    } else {
-      toast.success("Successfully. Check your email verification.");
-      router.push("/");
-    }
+    // if (resultJson?.error?.message) {
+    //   toast.error(resultJson.error.message);
+    // } else {
+    //   toast.success("Successfully. Check your email verification.");
+    //   router.push("/");
+    // }
+    router.push("/");
   }
 
   return (
@@ -77,13 +74,14 @@ export default function SignUp() {
           >
             <FormField
               control={form.control}
-              name="name"
+              name="username"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Your name"
+                      placeholder="Username"
+                      error={Boolean(form.formState.errors.username)}
                       {...field}
                       type="text"
                       onChange={field.onChange}
@@ -95,15 +93,16 @@ export default function SignUp() {
             />
             <FormField
               control={form.control}
-              name="email"
+              name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Phone</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="example@gmail.com"
+                      placeholder="+84 123 456 789"
+                      error={Boolean(form.formState.errors.phone)}
                       {...field}
-                      type="email"
+                      type="text"
                       onChange={field.onChange}
                     />
                   </FormControl>
@@ -119,8 +118,9 @@ export default function SignUp() {
                   <FormLabel>Password</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="password"
+                      placeholder="Password"
                       {...field}
+                      error={Boolean(form.formState.errors.password)}
                       type="password"
                       onChange={field.onChange}
                     />
@@ -139,6 +139,7 @@ export default function SignUp() {
                     <Input
                       placeholder="Confirm Password"
                       {...field}
+                      error={Boolean(form.formState.errors.confirm)}
                       type="password"
                       onChange={field.onChange}
                     />

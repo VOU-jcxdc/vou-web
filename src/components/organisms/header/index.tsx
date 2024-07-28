@@ -1,7 +1,8 @@
-import Dropdown from "@components/organisms/header/Dropdown";
-import NavBar from "@components/organisms/header/NavBar";
 import PrimaryLogo from "@components/PrimaryLogo";
 import ThemeButton from "@components/Theme/ThemeButton";
+
+import Dropdown from "@/components/organisms/header/drop-down";
+import NavBar from "@/components/organisms/header/nav-bar";
 
 export default function Header() {
   return (

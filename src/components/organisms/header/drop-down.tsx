@@ -6,7 +6,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@components/ui/dropdown-menu";
-import { Cog, LogOut, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 import GeneratedAvatar from "@/components/molecules/generated-avatar";
@@ -22,14 +22,12 @@ export default function Dropdown() {
       <DropdownMenuContent className="mx-3 w-56 bg-background">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profile</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Cog className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-          </DropdownMenuItem>
+          <Link href="/profile">
+            <DropdownMenuItem>
+              <User className="mr-2 h-4 w-4" />
+              <span>Profile</span>
+            </DropdownMenuItem>
+          </Link>
           <Link href="/log-in">
             <DropdownMenuItem>
               <LogOut className="mr-2 h-4 w-4" />
