@@ -15,15 +15,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import formatDate from "@/lib/utils/functions/formatDate";
-
-export type User = {
-  id: string;
-  username: string;
-  role: string;
-  avatar: string;
-  phone: string;
-  createdAt: string;
-};
+import { User } from "@/services";
+import { cn } from "@/lib/utils";
 
 const roleVariants = cva("border", {
   variants: {
@@ -42,6 +35,13 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "id",
     header: "ID",
+    cell: ({ row }) => {
+      return (
+        <div className="w-20 overflow-hidden text-nowrap text-ellipsis">
+          {row.getValue("id")}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "username",
@@ -58,36 +58,23 @@ export const columns: ColumnDef<User>[] = [
       const role = row.original.role;
 
       return (
-        <Badge variant="secondary" className={roleVariants({ role: "brand" })}>
+        <Badge
+          variant="secondary"
+          className={cn(roleVariants({ role: "brand" }), "capitalize")}
+        >
           {role}
         </Badge>
       );
     },
   },
   {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <div className="flex w-32 items-center justify-center border-none">
-          <Button
-            variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Created At
-            <ArrowUpDown className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      );
-    },
+    accessorKey: "createdOn",
+    header: "Created On",
     cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"));
+      const date = new Date(row.getValue("createdOn"));
       const formatted = formatDate(date);
 
-      return (
-        <div className="w-32 text-center">
-          {row.getValue("createdAt") ? formatted : "__"}
-        </div>
-      );
+      return <div>{row.getValue("createdOn") ? formatted : "__"}</div>;
     },
   },
   {

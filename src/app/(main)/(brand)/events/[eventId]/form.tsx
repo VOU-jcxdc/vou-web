@@ -1,12 +1,11 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import DatePicker from "@/components/Picker/Date/DatePicker";
 import { DateRangePicker } from "@/components/Picker/RangeDate/DateRangePicker";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -27,9 +26,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useUpdateEvent } from "@/hooks/react-query/useEvents";
 import { Event } from "@/services/events";
-import { useEffect } from "react";
-import { Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/useToast";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, "Name cannot be empty"),
@@ -62,7 +58,6 @@ export default function EventForm({ event }: { event: Event }) {
     },
     resolver: zodResolver(formSchema),
   });
-  const { toast } = useToast();
   const {
     handleSubmit,
     getValues,

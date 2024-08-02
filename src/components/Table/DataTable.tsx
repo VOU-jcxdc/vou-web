@@ -41,7 +41,6 @@ interface DataTableProps<TData, TValue> {
   isPaginationEnabled?: boolean;
   isCollumnVisibilityEnabled?: boolean;
   isSearchEnabled?: boolean;
-  searchAttribute?: string;
   isBorder?: boolean;
   isSeparator?: boolean;
   defaultPageSize?: number;
@@ -57,7 +56,6 @@ export function DataTable<TData, TValue>({
   isPaginationEnabled = true,
   isCollumnVisibilityEnabled = true,
   isSearchEnabled = true,
-  searchAttribute = "name",
   isBorder = true,
   isSeparator = true,
   defaultPageSize = 10,
@@ -96,15 +94,6 @@ export function DataTable<TData, TValue>({
         {isSearchEnabled && (
           <Input
             placeholder="Search..."
-            value={
-              (table.getColumn(searchAttribute)?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn(searchAttribute)
-                ?.setFilterValue(event.target.value)
-            }
             className="w-[200px] border border-[#E5E7EB] h-9"
           />
         )}

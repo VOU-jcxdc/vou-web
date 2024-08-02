@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getEvent, getEvents, updateEvent } from "@/services/events";
-import { Event } from "@/services/events";
+import { Event, getEvent, getEvents, updateEvent } from "@/services/events";
 
 import { useToast } from "../useToast";
 
 const eventKeys = {
-  list: () => ["events"] as const,
-  detail: (id: string) => [...eventKeys.list(), id] as const,
+  key: ["events"] as const,
+  list: () => [...eventKeys.key] as const,
+  detail: (id: string) => [...eventKeys.list(), "detail", id] as const,
 };
 
 export const useGetEvents = () => {

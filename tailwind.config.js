@@ -64,7 +64,7 @@ module.exports = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "var(--muted-foreground)",
+          foreground: "hsl(var(--muted-foreground))",
         },
         // light mode
         tremor: {

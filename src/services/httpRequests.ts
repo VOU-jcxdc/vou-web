@@ -1,9 +1,17 @@
+import { getAuthValueFromStorage } from "./auth";
+
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000";
 interface EndpointOptions extends Omit<RequestInit, "body"> {
-  searchParams?: URLSearchParams;
+  searchParams?: string;
   body?: unknown;
 }
+
+type APIResponse<T> = {
+  status: number;
+  message: string;
+  data: T;
+};
 
 class API {
   private headers: HeadersInit = {
@@ -27,12 +35,12 @@ class API {
       body: JSON.stringify(nextOptions.body),
     };
     const finalRequest = this.generateRequest(initRequest);
-    const url = [BASE_URL, endpoint, searchParams].filter(Boolean).join("/");
+    const url = BASE_URL + "/" + endpoint + "?" + searchParams;
     const response = await fetch(url, finalRequest);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    return response.json() as Promise<T>;
+    return (await ((await response.json()) as Promise<APIResponse<T>>)).data;
   }
   async post<T>(
     endpoint: string,
@@ -48,7 +56,7 @@ class API {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    return response.json() as Promise<T>;
+    return (await ((await response.json()) as Promise<APIResponse<T>>)).data;
   }
   async put<T>(
     endpoint: string,
@@ -64,7 +72,7 @@ class API {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    return response.json() as Promise<T>;
+    return (await ((await response.json()) as Promise<APIResponse<T>>)).data;
   }
   async delete<T>(
     endpoint: string,
@@ -80,10 +88,19 @@ class API {
     if (!response.ok) {
       throw new Error(response.statusText);
     }
-    return response.json() as Promise<T>;
+    return (await ((await response.json()) as Promise<APIResponse<T>>)).data;
   }
 }
 
-const api = new API();
+const api = new API((defaultRequest) => {
+  const auth = getAuthValueFromStorage();
+  return {
+    ...defaultRequest,
+    headers: {
+      ...defaultRequest.headers,
+      Authorization: `Bearer ${auth?.access_token}`,
+    },
+  };
+});
 export const apiAuth = new API();
 export default api;

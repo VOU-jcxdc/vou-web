@@ -1,4 +1,4 @@
-import { Role } from "@/types/enums";
+import { BrandField, Role } from "@/types/enums";
 
 import api, { apiAuth } from "./httpRequests";
 
@@ -11,17 +11,36 @@ export type Session = {
 };
 
 export type AuthInfo = {
-  tokenType: string;
-  accessToken: string;
-  expiresIn: number;
-  refreshToken: string;
+  token_type: string;
+  access_token: string;
+  expires_in: number;
+  refresh_token: string;
+};
+
+export type BrandInfo = {
+  name: string;
+  field: BrandField;
+  address: string;
+  location: {
+    lng: string;
+    lat: string;
+  };
 };
 
 type AuthUser = { username: string; phone: string; role: Role };
 
-type SignInParams = {
-  username: string;
+export type AccountIdentifier = {
+  phone: string;
   password: string;
+  username: string;
+  email: string;
+  role: string;
+};
+
+type SignInParams = Pick<AccountIdentifier, "phone" | "password">;
+
+export type SignUpParams = AccountIdentifier & {
+  data: BrandInfo;
 };
 
 export const getAuthValueFromStorage = () => {
@@ -37,8 +56,9 @@ export const getUserValueFromStorage = () => {
 };
 
 export const signIn = async (params: SignInParams) => {
-  const data = await apiAuth.post<AuthInfo>("auth/login", { body: params });
+  const data = await apiAuth.post<AuthInfo>("auth/sign-in", { body: params });
   localStorage.setItem(localStorageTokenKey, JSON.stringify(data));
+  return data;
 };
 
 export const signOut = () => {
@@ -48,6 +68,10 @@ export const signOut = () => {
       resolve(void 0);
     }, delay)
   );
+};
+
+export const signUp = async (params: SignUpParams) => {
+  return await apiAuth.post<AuthInfo>("auth/sign-up", { body: params });
 };
 
 export const getAuthUser = async () => {
@@ -61,6 +85,5 @@ export const refreshToken = async (refreshToken: string) => {
     body: { refreshToken },
   });
   localStorage.setItem(localStorageTokenKey, JSON.stringify(data));
-
-  return data.accessToken;
+  return data.access_token;
 };

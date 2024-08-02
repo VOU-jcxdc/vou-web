@@ -1,28 +1,40 @@
+"use client";
+// eslint-disable-next-line simple-import-sort/imports
 import { DataTable } from "@components/Table/DataTable";
 import PaddingWrapper from "@components/templates/padding-wrapper";
+import { Loader } from "lucide-react";
+import { useSearchParams, useRouter } from "next/navigation";
 
-import { columns, User } from "./_components/columns";
+import { useGetUsers } from "@/hooks/react-query/useUsers";
 
-async function getUsers(): Promise<User[]> {
-  const res = await fetch(
-    "https://669beb23276e45187d36d75f.mockapi.io/api/users"
-  );
-  const data = await res.json();
-  return data;
-}
+import { columns } from "./_components/columns";
+import usePushSearchParams from "@/hooks/usePushSearchParams";
+import { pagingSchema } from "@/types";
 
-export default async function page() {
-  const data = await getUsers();
+export default function Page() {
+  const searchParams = useSearchParams();
+  const pushSearch = usePushSearchParams();
+  const params = pagingSchema.parse(searchParams);
+  pushSearch(params);
+  const { isLoading, data, isSuccess, isError } = useGetUsers(params);
 
   return (
     <PaddingWrapper>
       <h1 className="font-semibold text-3xl my-4">User List</h1>
-      <DataTable
-        columns={columns}
-        data={data}
-        isPaginationEnabled={true}
-        defaultPageSize={10}
-      />
+      {isLoading && (
+        <div className="grid place-items-center min-h-[350px]">
+          <Loader className="animate-spin text-primary w-10 h-10" />
+        </div>
+      )}
+      {isError && <div>Error</div>}
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data.accounts}
+          isPaginationEnabled={true}
+          defaultPageSize={10}
+        />
+      )}
     </PaddingWrapper>
   );
 }
