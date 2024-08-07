@@ -11,8 +11,6 @@ import {
 import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
-import { useUploadFile } from "./useBucket";
-import useFiles from "../zustand/useFiles";
 
 export const userKeys = {
   key: ["users"] as const,

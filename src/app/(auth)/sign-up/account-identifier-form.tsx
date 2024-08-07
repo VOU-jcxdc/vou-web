@@ -22,8 +22,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import useSignUpStepper from "./useSignUpStepper";
 import { Role } from "@/types/enums";
+
+import useSignUpStepper from "./useSignUpStepper";
 
 const FormSchema = z
   .object({

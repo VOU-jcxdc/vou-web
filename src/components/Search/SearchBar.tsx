@@ -1,9 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { Gamepad2, Newspaper, Search,ShoppingCart } from "lucide-react";
+import { Gamepad2, Newspaper, Search, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import {

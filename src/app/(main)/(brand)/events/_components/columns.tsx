@@ -2,10 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
-import Image from "next/image";
+import moment from "moment";
 import Link from "next/link";
 
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -15,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Event } from "@/services/events";
-import moment from "moment";
 
 export const columns: ColumnDef<Event>[] = [
   {

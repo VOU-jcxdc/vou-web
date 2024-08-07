@@ -3,7 +3,7 @@
 import { DataTable } from "@components/Table/DataTable";
 import PaddingWrapper from "@components/templates/padding-wrapper";
 import { Loader } from "lucide-react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { useGetUsers } from "@/hooks/react-query/useUsers";
 

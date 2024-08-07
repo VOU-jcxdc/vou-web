@@ -58,7 +58,7 @@ export default function NavCombobox() {
               <CommandItem
                 key={framework.value}
                 value={framework.value}
-                onSelect={(currentValue) => {
+                onSelect={(_) => {
                   navigation.push("/");
                   setOpen(false);
                 }}

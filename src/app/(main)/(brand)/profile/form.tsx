@@ -53,7 +53,6 @@ export default function ProfileForm({ user }: { user: User }) {
   const [avatarDialog, setAvatarDialog] = useState(false);
   const {
     handleSubmit,
-    setValue,
     reset,
     formState: { errors, isDirty },
   } = form;

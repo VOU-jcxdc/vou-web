@@ -8,8 +8,8 @@ import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
 
 import useFiles from "@/hooks/zustand/useFiles";
-import { FileWithPreview } from "@/types";
 import { cn } from "@/lib/utils";
+import { FileWithPreview } from "@/types";
 
 interface RejectedFile {
   file: File;
@@ -89,10 +89,10 @@ const DropAndDragZone = ({
     setFiles((files) => files.filter((file) => file.name !== name));
   };
 
-  const removeAll = () => {
-    setFiles([]);
-    setRejected([]);
-  };
+  // const removeAll = () => {
+  //   setFiles([]);
+  //   setRejected([]);
+  // };
 
   const removeRejected = (name: string) => {
     setRejected((files) => files.filter(({ file }) => file.name !== name));

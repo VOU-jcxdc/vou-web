@@ -1,7 +1,8 @@
 import Template from "@app/(main)/template";
 import Footer from "@components/Layout/Footer/Footer";
-import Header from "@/components/organisms/header";
 import { redirect } from "next/navigation";
+
+import Header from "@/components/organisms/header";
 
 export default async function Home() {
   redirect("/users");

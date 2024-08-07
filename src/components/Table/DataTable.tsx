@@ -12,7 +12,6 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Filter } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Separator } from "../ui/separator";
 import { DataTablePagination } from "./Pagination";
 
 interface DataTableProps<TData, TValue> {

@@ -88,7 +88,7 @@ export default function EventForm({ event }: { event: Event }) {
         <div className="grid place-items-center gap-4">
           <Carousel className="w-full max-h-[250px]">
             <CarouselContent>
-              {event.images?.map((image, index) => (
+              {event.images?.map((_, index) => (
                 <CarouselItem>
                   <Image
                     key={index}

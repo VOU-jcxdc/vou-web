@@ -1,5 +1,5 @@
 import { PagedData, PagingSchema } from "@/types";
-import { BrandField, Role, UserGender, UserStatus } from "@/types/enums";
+import { BrandField, UserGender, UserStatus } from "@/types/enums";
 
 import api from "./httpRequests";
 import { fromPageToOffset, generateSearchParams } from "./utils";

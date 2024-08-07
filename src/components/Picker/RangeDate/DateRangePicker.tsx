@@ -21,14 +21,13 @@ import {
   ChevronDownIcon,
   ChevronUpIcon,
 } from "@radix-ui/react-icons";
+import { CalendarIcon } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 
-import useDatePicker from "@/hooks/zustand/useDatePicker";
 import { cn } from "@/lib/utils";
 import formatVNDate from "@/lib/utils/functions/formatVNDate";
 
 import { DateInput } from "./DateInput";
-import { CalendarIcon } from "lucide-react";
 
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker. */
