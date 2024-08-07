@@ -9,6 +9,7 @@ import { toast } from "sonner";
 
 import useFiles from "@/hooks/zustand/useFiles";
 import { FileWithPreview } from "@/types";
+import { cn } from "@/lib/utils";
 
 interface RejectedFile {
   file: File;
@@ -19,7 +20,7 @@ const DropAndDragZone = ({
   className,
   maxFiles,
 }: {
-  className: string;
+  className?: string;
   maxFiles?: number;
 }) => {
   const { saveFiles } = useFiles();
@@ -97,26 +98,18 @@ const DropAndDragZone = ({
     setRejected((files) => files.filter(({ file }) => file.name !== name));
   };
 
-  const action = async () => {
-    const file = files[0];
-    if (!file) return;
-  };
-
   return (
-    <form action={action} className="h-fit w-full">
-      <div
-        {...getRootProps({
-          className: className,
-        })}
-      >
+    <form className="h-fit w-full">
+      <div {...getRootProps({ className })}>
         <input className="" {...getInputProps({ name: "file" })} />
-        <div className="flex w-full flex-col items-center justify-center gap-4">
-          <Upload className="h-5 w-5" />
-          {isDragActive ? (
-            <p>Kéo thả hoặc chọn file ở đây</p>
-          ) : (
-            <p>Kéo thả hoặc chọn file ở đây</p>
+        <div
+          className={cn(
+            "flex w-full flex-col items-center justify-center gap-2 border border-dashed min-h-40 rounded hover:cursor-pointer hover:border-primary/80 hover:bg-primary/10",
+            isDragActive ? "border-primary/80 bg-primary/10" : ""
           )}
+        >
+          <Upload className="h-5 w-5" />
+          <p>Kéo thả hoặc chọn file ở đây</p>
         </div>
       </div>
 

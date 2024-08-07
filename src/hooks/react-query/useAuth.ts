@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 
-import { signUp, signIn } from "@/services/auth";
+import { signIn, signUp } from "@/services/auth";
 
 import { useToast } from "../useToast";
 
@@ -38,7 +38,7 @@ export const useSignIn = () => {
         description: "You have successfully logged in",
         variant: "default",
       });
-      router.push("/");
+      router.push("/users");
     },
     onError: (error) => {
       toast({

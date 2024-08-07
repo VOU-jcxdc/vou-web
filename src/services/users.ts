@@ -1,20 +1,50 @@
-import { PagedData, PagingSchema, PagingSchema } from "@/types";
-import { Role } from "@/types/enums";
+import { PagedData, PagingSchema } from "@/types";
+import { BrandField, Role, UserGender, UserStatus } from "@/types/enums";
 
 import api from "./httpRequests";
 import { fromPageToOffset, generateSearchParams } from "./utils";
 
-export type User = {
+type UserBaseInfo = {
   id: string;
   username: string;
-  role: string;
-  avatar: string;
   phone: string;
   email: string;
+  status: UserStatus;
+  bucketId: string | null;
   createdOn: string;
+  updatedOn: string;
 };
 
-export type UpdateUserParams = User;
+export type UserBrand = UserBaseInfo & {
+  role: "brand";
+  info: {
+    id?: string;
+    name: string;
+    field: BrandField;
+    address: string;
+    gps: {
+      type: string;
+      coordinates: number[];
+    };
+  };
+};
+
+export type UserPlayer = UserBaseInfo & {
+  role: "player";
+  info: {
+    id?: string;
+    name: string;
+    gender: UserGender;
+  };
+};
+
+export type UserAdmin = UserBaseInfo & {
+  role: "admin";
+};
+
+export type User = UserBrand | UserPlayer | UserAdmin;
+
+export type UpdateUserParams = Partial<User>;
 
 export const getUsers = async (params: PagingSchema) => {
   const searchParams = generateSearchParams(fromPageToOffset(params));
@@ -26,9 +56,17 @@ export const getUsers = async (params: PagingSchema) => {
 };
 
 export const getUser = async (id: string) => {
-  return await api.get<User>(`admin/users/${id}`);
+  return await api.get<User>(`admin/user/${id}`);
 };
 
 export const updateUser = async (body: UpdateUserParams) => {
-  return await api.put<User>(`users/${body.id}`, { body });
+  return await api.put<User>(`admin/user/${body.id}`, { body });
+};
+
+export const getUserProfile = async () => {
+  return await api.get<User>(`user/profile`);
+};
+
+export const updateUserProfile = async (body: UpdateUserParams) => {
+  return await api.put<User>(`user/profile`, { body });
 };

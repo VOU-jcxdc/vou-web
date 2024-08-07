@@ -1,10 +1,23 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
+import { Loader2, UserRound } from "lucide-react";
 import Image from "next/image";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import DropAndDragZone from "@/components/File/DropAndDragZone";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -14,60 +27,81 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import {
+  bucketKeys,
+  useGetFile,
+  useUploadFile,
+} from "@/hooks/react-query/useBucket";
+import { userKeys, useUpdateUserProfile } from "@/hooks/react-query/useUsers";
+import useFiles from "@/hooks/zustand/useFiles";
 import { User } from "@/services";
-import { BrandField } from "@/types/enums";
-import { useEffect } from "react";
 
 const formSchema = z.object({
   username: z.string().trim().min(1, "Username cannot be empty"),
   phone: z.string().trim().min(1, "Phone cannot be empty"),
+  email: z.string().email(),
 });
-
-const brandSchema = z.object({
-  name: z.string().trim().min(1, "Brand name cannot be empty"),
-  field: z.enum([
-    BrandField.CAFE,
-    BrandField.FASHION,
-    BrandField.FnB,
-    BrandField.GAMES,
-    BrandField.HEALTH,
-    BrandField.LIFESTYLE,
-    BrandField.SPORTS,
-    BrandField.TECHNOLOGY,
-    BrandField.TRAVEL,
-  ]),
-  address: z.string().trim().min(1, "Address cannot be empty"),
-});
-
-type Brand = z.infer<typeof brandSchema> & User;
 
 export default function ProfileForm({ user }: { user: User }) {
-  const form = useForm<Brand>({
+  const form = useForm<User>({
     defaultValues: {
       ...user,
-      field: BrandField.CAFE,
-      address: "",
-      name: "",
     },
-    resolver: zodResolver(formSchema.merge(brandSchema)),
+    resolver: zodResolver(formSchema),
   });
+  const [avatarDialog, setAvatarDialog] = useState(false);
   const {
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isDirty },
   } = form;
+  const { files } = useFiles();
+  const { data, isSuccess } = useGetFile(user.bucketId);
+  const changeAvatarMutation = useUploadFile();
+  const updateProfileMutation = useUpdateUserProfile();
+  const queryClient = useQueryClient();
 
   const onSubmit = (data: User) => {
-    console.log(data);
+    updateProfileMutation.mutate(data, {
+      onSuccess: (returnData) => {
+        reset(returnData);
+      },
+    });
   };
+
+  const changeAvatar = () => {
+    changeAvatarMutation.mutate(
+      {
+        id: user.bucketId ? user.bucketId : undefined,
+        filename: files[0].name,
+        file: files[0] as File,
+      },
+      {
+        onSuccess: (result) => {
+          if (!user.bucketId) {
+            updateProfileMutation.mutate(
+              { id: user.id, bucketId: result.id },
+              {
+                onSuccess: (returnData) => {
+                  queryClient.setQueryData(
+                    [userKeys.key, "profile"],
+                    returnData
+                  );
+                },
+              }
+            );
+          }
+          setAvatarDialog(false);
+          queryClient.refetchQueries({
+            queryKey: bucketKeys.detail(result.id),
+          });
+        },
+      }
+    );
+  };
+
   return (
     <Form {...form}>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
@@ -97,7 +131,7 @@ export default function ProfileForm({ user }: { user: User }) {
                 <FormItem>
                   <FormLabel>Phone</FormLabel>
                   <FormControl>
-                    <Input {...field} error={Boolean(errors.phone)} />
+                    <Input {...field} error={Boolean(errors.phone)} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,67 +139,12 @@ export default function ProfileForm({ user }: { user: User }) {
             />
             <FormField
               control={form.control}
-              name="name"
+              name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Brand name</FormLabel>
+                  <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      type="text"
-                      error={Boolean(errors.name)}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="field"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Brand field</FormLabel>
-                  <FormControl>
-                    <Select
-                      {...field}
-                      onValueChange={(newValue) => {
-                        setValue(field.name, newValue as BrandField, {
-                          shouldDirty: true,
-                          shouldTouch: true,
-                        });
-                      }}
-                    >
-                      <SelectTrigger className="capitalize">
-                        <SelectValue placeholder="Select a field">
-                          {field.value}
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.values(BrandField).map((value) => (
-                          <SelectItem
-                            key={value}
-                            value={value}
-                            className="capitalize"
-                          >
-                            {value}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input {...field} error={Boolean(errors.address)} />
+                    <Input {...field} error={Boolean(errors.email)} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -175,24 +154,50 @@ export default function ProfileForm({ user }: { user: User }) {
           <div className="md:hidden">
             <Separator orientation="vertical" />
           </div>
-          <div className="relative">
-            <Image
-              className="rounded-full"
-              src={user.avatar}
-              alt={user.username}
-              width={200}
-              height={200}
-            />
+          <div className="flex flex-col gap-4 items-center">
+            {user.bucketId && isSuccess && data.url ? (
+              <div className="rounded-full w-48 h-48 relative overflow-hidden">
+                <Image fill src={data.url} alt={user.username} />
+              </div>
+            ) : (
+              <div className="w-[200px] h-[200px] rounded-full bg-muted-foreground/20 grid place-items-center">
+                <UserRound className="text-muted-foreground w-24 h-24" />
+              </div>
+            )}
+            <Dialog
+              open={avatarDialog}
+              onOpenChange={(open) => {
+                setAvatarDialog(open);
+              }}
+            >
+              <DialogTrigger asChild>
+                <Button variant="outline">Change avatar</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Change avatar</DialogTitle>
+                </DialogHeader>
+                <DropAndDragZone maxFiles={1} />
+                <DialogFooter className="flex flex-row gap-4 justify-end">
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
+                  <Button onClick={changeAvatar} disabled={files.length === 0}>
+                    Done
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
         <Button
           type="submit"
           className="w-fit"
-          disabled={!isDirty}
-          onClick={() => {
-            console.log(isDirty);
-          }}
+          disabled={!isDirty || updateProfileMutation.isPending}
         >
+          {updateProfileMutation.isPending && (
+            <Loader2 className="animate-spin h-4 w-4 mr-2" />
+          )}
           Save changes
         </Button>
       </form>

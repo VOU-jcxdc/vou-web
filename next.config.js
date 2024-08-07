@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   images: {
-    domains: ["cloudflare-ipfs.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname:
+          "vou.453294f7d0377a0acaec90d3a0ff135c.r2.cloudflarestorage.com",
+        port: "", // Optional
+        pathname: "**", // Optional, allows all paths
+      },
+    ],
   },
 };
 

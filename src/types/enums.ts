@@ -15,3 +15,14 @@ export enum BrandField {
   TECHNOLOGY = "technology",
   TRAVEL = "travel",
 }
+
+export enum UserStatus {
+  ACTIVE = "active",
+  INACTIVE = "inactive",
+}
+
+export enum UserGender {
+  FEMALE = "female",
+  MALE = "male",
+  OTHER = "other",
+}

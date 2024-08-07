@@ -29,7 +29,6 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
 } from "@/components/ui/select";
 import { useSignUp } from "@/hooks/react-query/useAuth";
 import { BrandField } from "@/types/enums";

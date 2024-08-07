@@ -64,7 +64,6 @@ export const columns: ColumnDef<Event>[] = [
             <DropdownMenuItem asChild>
               <Link href={`/events/${game.id}`}>View event</Link>
             </DropdownMenuItem>
-            {/* <DropdownMenuItem>Deactivate user</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

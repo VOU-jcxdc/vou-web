@@ -35,8 +35,11 @@ class API {
       body: JSON.stringify(nextOptions.body),
     };
     const finalRequest = this.generateRequest(initRequest);
-    const url = BASE_URL + "/" + endpoint + "?" + searchParams;
-    const response = await fetch(url, finalRequest);
+    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
+    const response = await fetch(
+      searchParams ? url + "?" + searchParams : url,
+      finalRequest
+    );
     if (!response.ok) {
       throw new Error(response.statusText);
     }
@@ -46,13 +49,15 @@ class API {
     endpoint: string,
     { body, ...nextOptions }: EndpointOptions = {}
   ) {
-    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
-    const response = await fetch(url, {
+    const initRequest = {
       method: "POST",
       headers: this.headers,
       ...nextOptions,
       body: JSON.stringify(body),
-    });
+    };
+    const finalRequest = this.generateRequest(initRequest);
+    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
+    const response = await fetch(url, finalRequest);
     if (!response.ok) {
       throw new Error(response.statusText);
     }
@@ -62,13 +67,15 @@ class API {
     endpoint: string,
     { body, ...nextOptions }: EndpointOptions = {}
   ) {
-    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
-    const response = await fetch(url, {
+    const initRequest = {
       method: "PUT",
       headers: this.headers,
       ...nextOptions,
       body: JSON.stringify(body),
-    });
+    };
+    const finalRequest = this.generateRequest(initRequest);
+    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
+    const response = await fetch(url, finalRequest);
     if (!response.ok) {
       throw new Error(response.statusText);
     }

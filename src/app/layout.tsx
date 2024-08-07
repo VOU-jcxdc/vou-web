@@ -6,9 +6,8 @@ import ReactQueryProvider from "@/components/Providers/react-query.provider";
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata = {
-  title: "vOU",
-  description: "The fastest way to build apps with Next.js and Supabase.",
-  keywords: "next.js, supabase, starter kit",
+  title: "VOU",
+  keywords: "next.js, typescript, tailwindcss, react-query, zustand",
 };
 
 export default function RootLayout({
@@ -26,7 +25,7 @@ export default function RootLayout({
       <body className="bg-background text-foreground">
         <ReactQueryProvider>
           <ThemeProvider>
-            <main className="mx-auto flex min-h-screen w-screen max-w-[2200px] flex-col items-center">
+            <main className="flex min-h-screen w-auto max-w-[2200px] flex-col items-center">
               {children}
             </main>
             <Toaster />

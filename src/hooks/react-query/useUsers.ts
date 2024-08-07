@@ -1,11 +1,20 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUser, getUsers, updateUser, User } from "@/services";
-import { PagingSchema } from "@/types";
+import {
+  getUser,
+  getUserProfile,
+  getUsers,
+  updateUser,
+  updateUserProfile,
+  User,
+} from "@/services";
+import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
+import { useUploadFile } from "./useBucket";
+import useFiles from "../zustand/useFiles";
 
-const userKeys = {
+export const userKeys = {
   key: ["users"] as const,
   profil: () => [...userKeys.key, "profile"] as const,
   list: () => [...userKeys.key] as const,
@@ -33,29 +42,84 @@ export const useUpdateUser = (id: string) => {
     mutationKey: ["update", ...userKeys.detail(id)],
     mutationFn: updateUser,
     onSuccess: (returnData: User) => {
-      queryClient.setQueryData(userKeys.detail(id), (user: User) => {
-        return {
-          ...user,
-          ...returnData,
-        };
+      queryClient.setQueryData(userKeys.detail(id), () => {
+        return returnData;
       });
-      const existingEvents = queryClient.getQueryData<User[]>(userKeys.list());
-      if (existingEvents) {
-        queryClient.setQueryData(userKeys.list(), (users: User[]) => {
-          return users.map((user) => {
-            if (user.id === returnData.id) return returnData;
-            return user;
-          });
-        });
+      const existingUsers = queryClient.getQueryData<
+        PagedData & {
+          accounts: User[];
+        }
+      >(userKeys.list());
+      if (existingUsers && existingUsers.accounts) {
+        queryClient.setQueryData(
+          userKeys.list(),
+          (
+            data: PagedData & {
+              accounts: User[];
+            }
+          ) => {
+            return {
+              ...data,
+              accounts: data.accounts.map((user) =>
+                user.id === returnData.id ? returnData : user
+              ),
+            };
+          }
+        );
       }
       toast({
         description: "Update user successfully!",
       });
     },
-    onError: () => {
+    onError: (e) => {
+      console.log(e);
       toast({
         variant: "destructive",
         description: "Failed to update user!",
+      });
+    },
+  });
+};
+
+// export const useUpdateAvatar = () => {
+//   const queryClient = useQueryClient();
+//   const { toast } = useToast();
+//   const changeAvatarMutation = useUploadFile();
+//   const mutate = (bucketId: string | null, file: File, ) => {
+//     if (bucketId)
+//       changeAvatarMutation.mutate({
+//         id: bucketId,
+//         filename: file.name,
+//         file
+//       }, {
+
+//       });
+//   };
+// };
+
+export const useGetUserProfile = () => {
+  return useQuery({
+    queryKey: [...userKeys.key, "profile"],
+    queryFn: getUserProfile,
+  });
+};
+
+export const useUpdateUserProfile = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: updateUserProfile,
+    onSuccess: (returnData: User) => {
+      queryClient.setQueryData([...userKeys.key, "profile"], () => returnData);
+      toast({
+        description: "Update user profile successfully!",
+      });
+    },
+    onError: (e) => {
+      console.log(e);
+      toast({
+        variant: "destructive",
+        description: "Failed to update user profile!",
       });
     },
   });

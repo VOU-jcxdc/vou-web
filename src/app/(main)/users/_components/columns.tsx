@@ -14,9 +14,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import formatDate from "@/lib/utils/functions/formatDate";
 import { User } from "@/services";
-import { cn } from "@/lib/utils";
 
 const roleVariants = cva("border", {
   variants: {
@@ -25,6 +25,10 @@ const roleVariants = cva("border", {
       player: "border-blue-500 bg-blue-100 text-blue-900 hover:bg-blue-100",
       brand:
         "border-orange-600 bg-orange-100 text-orange-900 hover:bg-orange-100",
+    },
+    status: {
+      active: "border-green-600 bg-green-100 text-green-900 hover:bg-green-100",
+      inactive: "border-red-600 bg-red-100 text-red-900 hover:bg-red-100",
     },
   },
   defaultVariants: {
@@ -55,14 +59,39 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: "role",
     header: "Role",
     cell: ({ row }) => {
-      const role = row.original.role;
+      const role = row.original.role as
+        | "admin"
+        | "player"
+        | "brand"
+        | null
+        | undefined;
 
       return (
         <Badge
           variant="secondary"
-          className={cn(roleVariants({ role: "brand" }), "capitalize")}
+          className={cn(roleVariants({ role }), "capitalize")}
         >
           {role}
+        </Badge>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status as
+        | "active"
+        | "inactive"
+        | null
+        | undefined;
+
+      return (
+        <Badge
+          variant="secondary"
+          className={cn(roleVariants({ status }), "capitalize")}
+        >
+          {status}
         </Badge>
       );
     },
@@ -99,7 +128,6 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem asChild>
               <Link href={`/users/${user.id}`}>View user</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Deactivate user</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

@@ -1,3 +1,6 @@
+"use client";
+import { Loader } from "lucide-react";
+
 import PaddingWrapper from "@/components/templates/padding-wrapper";
 import {
   Card,
@@ -6,20 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { User } from "@/services";
+import { useGetUserProfile } from "@/hooks/react-query/useUsers";
 
 import Form from "./form";
 
-async function getUser({ userId }: { userId: string }): Promise<User> {
-  const res = await fetch(
-    `https://669beb23276e45187d36d75f.mockapi.io/api/users/${userId}`
-  );
-  const data = await res.json();
-  return data;
-}
-
-export default async function ProfilePage() {
-  const user = await getUser({ userId: "1" });
+export default function ProfilePage() {
+  const { isLoading, isSuccess, isError, data } = useGetUserProfile();
   return (
     <PaddingWrapper className="grid grid-cols-12 bg-muted h-fit min-h-screen">
       <Card className="mt-10 h-fit flex flex-col gap-4 col-start-3 col-end-11 md:col-start-1 md:col-end-13">
@@ -28,7 +23,13 @@ export default async function ProfilePage() {
           <CardDescription>Your account information</CardDescription>
         </CardHeader>
         <CardContent>
-          <Form user={user} />
+          {isLoading && (
+            <div className="grid place-items-center min-h-[350px]">
+              <Loader className="animate-spin text-primary w-10 h-10" />
+            </div>
+          )}
+          {isError && <div>Error</div>}
+          {isSuccess && <Form user={data} />}
         </CardContent>
       </Card>
     </PaddingWrapper>

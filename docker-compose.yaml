@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
   frontend:
-    image: venuedb-frontend
+    image: vou-web
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "5173:5173"
+      - "3004:3000"
     environment:
       - NODE_ENV=development
     volumes:
