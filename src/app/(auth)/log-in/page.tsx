@@ -9,13 +9,11 @@ import {
   FormMessage,
 } from "@components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import * as z from "zod";
 
-import { signInWithEmailAndPassword } from "@/app/(auth)/_actions/signIn";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,36 +23,27 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-// import GoogleOAuthForm from "../OAuth/GoogleOAuth";
+import { useSignIn } from "@/hooks/react-query/useAuth";
 
-const FormSchema = z.object({
-  email: z.string().email(),
+const formSchema = z.object({
+  phone: z.string(),
   password: z.string().min(1, "Password is required"),
 });
 
+type FormInputs = z.infer<typeof formSchema>;
+
 export default function SignIn() {
-  const router = useRouter();
-
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<FormInputs>({
     defaultValues: {
-      email: "",
-      password: "",
+      phone: "123",
+      password: "12345678",
     },
+    resolver: zodResolver(formSchema),
   });
+  const signInMutation = useSignIn();
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const result = await signInWithEmailAndPassword(data);
-    const resultJson = JSON.parse(result);
-
-    if (resultJson?.data?.session) {
-      toast.success("Log in successfully.");
-      router.push("/");
-    } else if (resultJson?.error?.message) {
-      toast.error(resultJson.error.message);
-    } else {
-      router.push("/");
-    }
+  function onSubmit(data: FormInputs) {
+    signInMutation.mutate(data);
   }
 
   return (
@@ -74,16 +63,16 @@ export default function SignIn() {
             >
               <FormField
                 control={form.control}
-                name="email"
+                name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Phone</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="example@gmail.com"
-                        error={Boolean(form.formState.errors.email)}
+                        type="text"
+                        placeholder="+84 123 456 789"
+                        error={Boolean(form.formState.errors.phone)}
                         {...field}
-                        type="email"
                         onChange={field.onChange}
                       />
                     </FormControl>
@@ -99,7 +88,7 @@ export default function SignIn() {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="password"
+                        placeholder="Password"
                         error={Boolean(form.formState.errors.password)}
                         {...field}
                         type="password"
@@ -123,7 +112,11 @@ export default function SignIn() {
                 type="submit"
                 variant="default"
                 className="w-full bg-primary"
+                disabled={signInMutation.isPending}
               >
+                {signInMutation.isPending && (
+                  <Loader2 className="animate-spin text-white w-5 h-5 mr-1" />
+                )}
                 Log in
               </Button>
               <p className="text-center text-sm text-foreground">

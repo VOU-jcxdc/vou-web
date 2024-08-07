@@ -27,7 +27,7 @@ export default function DatePicker() {
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? formatVNDate(date) : <span>Chọn ngày tháng</span>}
+          {date ? formatVNDate(date) : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

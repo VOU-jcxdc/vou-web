@@ -39,7 +39,6 @@ interface DataTableProps<TData, TValue> {
   isPaginationEnabled?: boolean;
   isCollumnVisibilityEnabled?: boolean;
   isSearchEnabled?: boolean;
-  searchAttribute?: string;
   isBorder?: boolean;
   isSeparator?: boolean;
   defaultPageSize?: number;
@@ -55,7 +54,6 @@ export function DataTable<TData, TValue>({
   isPaginationEnabled = true,
   isCollumnVisibilityEnabled = true,
   isSearchEnabled = true,
-  searchAttribute = "name",
   isBorder = true,
   isSeparator = true,
   defaultPageSize = 10,
@@ -94,24 +92,20 @@ export function DataTable<TData, TValue>({
         {isSearchEnabled && (
           <Input
             placeholder="Search..."
-            value={
-              (table.getColumn(searchAttribute)?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn(searchAttribute)
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-52 border border-[#E5E7EB]"
+            className="w-[200px] border border-[#E5E7EB] h-9"
           />
         )}
-
+        {/* <Button variant="outline" size="sm">
+          <Filter className="h-4 w-4 mr-2" />
+          <span>Role</span>
+          <Separator orientation="vertical" className="mx-2 h-4 bg-primary" />
+          <div className="text-primary">Admin, Player</div>
+        </Button> */}
         {/* Column visibility */}
         {isCollumnVisibilityEnabled && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
+              <Button variant="outline" size="sm" className="ml-auto">
                 Columns
               </Button>
             </DropdownMenuTrigger>

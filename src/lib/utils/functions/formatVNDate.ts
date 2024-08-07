@@ -2,7 +2,7 @@ import moment from "moment";
 
 const formatVNDate = (date: Date): string => {
   moment.locale("vi");
-  const formattedDate = moment(date).format("[Ngày] D/M/YYYY");
+  const formattedDate = moment(date).format("D/M/YYYY");
 
   return formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 };

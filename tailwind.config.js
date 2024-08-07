@@ -40,6 +40,10 @@ module.exports = {
           background: "hsl(var(--btn-background))",
           "background-hover": "hsl(var(--btn-background-hover))",
         },
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          muted: "hsl(var(--border-muted))",
+        },
         white: "var(--novel-white)",
         stone: {
           50: "var(--novel-stone-50)",
@@ -60,7 +64,7 @@ module.exports = {
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
-          foreground: "var(--muted-foreground)",
+          foreground: "hsl(var(--muted-foreground))",
         },
         // light mode
         tremor: {
