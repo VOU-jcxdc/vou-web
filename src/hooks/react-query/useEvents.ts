@@ -1,19 +1,27 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
-import { Event, getEvent, getEvents, updateEvent } from "@/services/events";
+import {
+  createEvent,
+  Event,
+  getEvent,
+  getEvents,
+  updateEvent,
+} from "@/services/events";
+import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
 
-const eventKeys = {
+export const eventKeys = {
   key: ["events"] as const,
   list: () => [...eventKeys.key] as const,
   detail: (id: string) => [...eventKeys.list(), "detail", id] as const,
 };
 
-export const useGetEvents = () => {
+export const useGetEvents = (params: PagingSchema) => {
   return useQuery({
     queryKey: eventKeys.list(),
-    queryFn: getEvents,
+    queryFn: () => getEvents(params),
   });
 };
 
@@ -37,16 +45,25 @@ export const useUpdateEvent = (id: string) => {
           ...returnData,
         };
       });
-      const existingEvents = queryClient.getQueryData<Event[]>(
-        eventKeys.list()
-      );
-      if (existingEvents) {
-        queryClient.setQueryData(eventKeys.list(), (events: Event[]) => {
-          return events.map((event) => {
-            if (event.id === returnData.id) return returnData;
-            return event;
-          });
-        });
+      const existingEvents = queryClient.getQueryData<
+        PagedData & { events: Event[] }
+      >(eventKeys.list());
+      if (existingEvents && existingEvents.events) {
+        queryClient.setQueryData(
+          eventKeys.list(),
+          (
+            data: PagedData & {
+              events: Event[];
+            }
+          ) => {
+            return {
+              ...data,
+              events: data.events.map((event) => {
+                return event.id === id ? { ...event, ...returnData } : event;
+              }),
+            };
+          }
+        );
       }
       toast({
         description: "Update event successfully!",
@@ -55,6 +72,30 @@ export const useUpdateEvent = (id: string) => {
     onError: () => {
       toast({
         description: "Failed to update event!",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useCreateEvent = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: createEvent,
+    onSuccess: (returnData: Event) => {
+      queryClient.invalidateQueries({ queryKey: eventKeys.list() });
+      queryClient.setQueryData(eventKeys.detail(returnData.id), returnData);
+      toast({
+        description: "Create event successfully!",
+      });
+      router.push(`/events`);
+    },
+    onError: () => {
+      toast({
+        description: "Failed to create event!",
+        variant: "destructive",
       });
     },
   });

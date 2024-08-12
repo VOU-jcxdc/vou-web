@@ -21,7 +21,6 @@ export const getFile = async (id: string) => {
 };
 
 export const getPresignedURL = async (body: PresignedURLParams) => {
-  console.log(body);
   if (!body.id) {
     return await api.post<Bucket>("files/presigned-url", {
       body,
