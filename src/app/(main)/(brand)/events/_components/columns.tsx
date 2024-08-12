@@ -19,6 +19,13 @@ export const columns: ColumnDef<Event>[] = [
   {
     accessorKey: "id",
     header: "ID",
+    cell: ({ row }) => {
+      return (
+        <div className="w-20 overflow-hidden text-nowrap text-ellipsis">
+          {row.getValue("id")}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "name",
@@ -43,7 +50,7 @@ export const columns: ColumnDef<Event>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const game = row.original;
+      const event = row.original;
 
       return (
         <DropdownMenu>
@@ -55,12 +62,12 @@ export const columns: ColumnDef<Event>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(game.id)}
+              onClick={() => navigator.clipboard.writeText(event.id)}
             >
               Copy event ID
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/events/${game.id}`}>View event</Link>
+              <Link href={`/events/${event.id}`}>View event</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

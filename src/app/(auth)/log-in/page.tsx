@@ -35,7 +35,7 @@ type FormInputs = z.infer<typeof formSchema>;
 export default function SignIn() {
   const form = useForm<FormInputs>({
     defaultValues: {
-      phone: "123",
+      phone: "0939074483",
       password: "12345678",
     },
     resolver: zodResolver(formSchema),
