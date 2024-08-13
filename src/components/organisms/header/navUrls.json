@@ -2,16 +2,16 @@
   {
     "name": "Users",
     "url": "/users",
-    "permission": ""
+    "permission": "admin"
   },
   {
     "name": "Games",
     "url": "/games",
-    "permission": ""
+    "permission": "admin"
   },
   {
     "name": "Events",
     "url": "/events",
-    "permission": ""
+    "permission": "brand"
   }
 ]

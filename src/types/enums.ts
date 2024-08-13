@@ -26,3 +26,9 @@ export enum UserGender {
   MALE = "male",
   OTHER = "other",
 }
+
+export enum EventStatusEnum {
+  PLANNING = "planning",
+  ONGOING = "ongoing",
+  FINISHED = "finished",
+}

@@ -4,7 +4,6 @@ import api, { apiAuth } from "./httpRequests";
 
 const delay = 500;
 const localStorageTokenKey = "auth_client_token";
-const localStorageUserKey = "auth_client_user";
 
 export type Session = {
   user?: AuthInfo;
@@ -27,8 +26,6 @@ export type BrandInfo = {
   };
 };
 
-type AuthUser = { username: string; phone: string; role: Role };
-
 export type AccountIdentifier = {
   phone: string;
   password: string;
@@ -49,12 +46,6 @@ export const getAuthValueFromStorage = () => {
     : null;
 };
 
-export const getUserValueFromStorage = () => {
-  return localStorage.getItem(localStorageUserKey)
-    ? (JSON.parse(localStorage.getItem(localStorageUserKey) ?? "") as AuthUser)
-    : null;
-};
-
 export const signIn = async (params: SignInParams) => {
   const data = await apiAuth.post<AuthInfo>("auth/sign-in", { body: params });
   localStorage.setItem(localStorageTokenKey, JSON.stringify(data));
@@ -72,12 +63,6 @@ export const signOut = () => {
 
 export const signUp = async (params: SignUpParams) => {
   return await apiAuth.post<AuthInfo>("auth/sign-up", { body: params });
-};
-
-export const getAuthUser = async () => {
-  const data = await api.get<AuthUser>("auth/profile");
-  localStorage.setItem(localStorageUserKey, JSON.stringify(data));
-  return data;
 };
 
 export const refreshToken = async (refreshToken: string) => {
