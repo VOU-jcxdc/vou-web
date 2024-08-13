@@ -84,10 +84,7 @@ export default function ProfileForm({ user }: { user: User }) {
               { id: user.id, bucketId: result.id },
               {
                 onSuccess: (returnData) => {
-                  queryClient.setQueryData(
-                    [userKeys.key, "profile"],
-                    returnData
-                  );
+                  queryClient.setQueryData(userKeys.profile(), returnData);
                 },
               }
             );

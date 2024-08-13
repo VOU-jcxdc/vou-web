@@ -14,7 +14,7 @@ import { useToast } from "../useToast";
 
 export const userKeys = {
   key: ["users"] as const,
-  profil: () => [...userKeys.key, "profile"] as const,
+  profile: () => [...userKeys.key, "profile"] as const,
   list: () => [...userKeys.key] as const,
   detail: (id: string) => [...userKeys.list(), "detail", id] as const,
 };
@@ -70,7 +70,7 @@ export const useUpdateUser = (id: string) => {
       });
     },
     onError: (e) => {
-      console.log(e);
+      console.error(e);
       toast({
         variant: "destructive",
         description: "Failed to update user!",
@@ -97,7 +97,7 @@ export const useUpdateUser = (id: string) => {
 
 export const useGetUserProfile = () => {
   return useQuery({
-    queryKey: [...userKeys.key, "profile"],
+    queryKey: userKeys.profile(),
     queryFn: getUserProfile,
   });
 };
@@ -108,13 +108,13 @@ export const useUpdateUserProfile = () => {
   return useMutation({
     mutationFn: updateUserProfile,
     onSuccess: (returnData: User) => {
-      queryClient.setQueryData([...userKeys.key, "profile"], () => returnData);
+      queryClient.setQueryData(userKeys.profile(), () => returnData);
       toast({
         description: "Update user profile successfully!",
       });
     },
     onError: (e) => {
-      console.log(e);
+      console.error(e);
       toast({
         variant: "destructive",
         description: "Failed to update user profile!",
