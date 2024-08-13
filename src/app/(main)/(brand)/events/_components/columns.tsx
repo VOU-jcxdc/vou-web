@@ -1,10 +1,12 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { cva } from "class-variance-authority";
 import { MoreHorizontal } from "lucide-react";
 import moment from "moment";
 import Link from "next/link";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,7 +15,19 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import { Event } from "@/services/events";
+
+const statusVariants = cva("border", {
+  variants: {
+    status: {
+      ongoing:
+        "border-green-600 bg-green-100 text-green-900 hover:bg-green-100",
+      planning: "border-blue-600 bg-blue-100 text-blue-900 hover:bg-blue-100",
+      finished: "border-gray-600 bg-gray-100 text-gray-900 hover:bg-gray-100",
+    },
+  },
+});
 
 export const columns: ColumnDef<Event>[] = [
   {
@@ -45,6 +59,21 @@ export const columns: ColumnDef<Event>[] = [
     cell: ({ row }) => {
       const event = row.original;
       return moment(event.endDate).calendar().split(" at")[0];
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: ({ row }) => {
+      const status = row.original.status as "ongoing" | "planning" | "finished";
+      return (
+        <Badge
+          variant="secondary"
+          className={cn(statusVariants({ status }), "capitalize")}
+        >
+          {status}
+        </Badge>
+      );
     },
   },
   {

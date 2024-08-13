@@ -2,6 +2,7 @@ import { PagedData, PagingSchema } from "@/types";
 
 import api from "./httpRequests";
 import { fromPageToOffset, generateSearchParams } from "./utils";
+import { EventStatusEnum } from "@/types/enums";
 
 export type Event = {
   id: string;
@@ -10,6 +11,7 @@ export type Event = {
   endDate: string;
   description?: string;
   images: string[];
+  status: EventStatusEnum;
 };
 
 export type CreateEventParams = Omit<Event, "id">;

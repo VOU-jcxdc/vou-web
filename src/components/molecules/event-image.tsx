@@ -11,6 +11,7 @@ type EventImageProps = {
 
 export function EventImage({ bucketId }: EventImageProps) {
   const { data, isSuccess, isLoading, isError } = useGetFile(bucketId);
+
   if (isLoading)
     return <Skeleton className="rounded-md w-full h-[250px] object-cover" />;
   if (isError)
@@ -24,13 +25,14 @@ export function EventImage({ bucketId }: EventImageProps) {
     );
   if (isSuccess && data.url)
     return (
-      <Image
-        className="rounded-md w-full max-h-[250px] object-cover"
-        src={data.url}
-        alt={`Image ${bucketId}`}
-        width={200}
-        height={250}
-      />
+      <div className="rounded-md w-full h-[250px] object-cover overflow-hidden relative">
+        <Image
+          src={data.url}
+          alt={`Image ${bucketId}`}
+          fill
+          className="object-cover"
+        />
+      </div>
     );
   return null;
 }
