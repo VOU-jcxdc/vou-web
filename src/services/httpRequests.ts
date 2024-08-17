@@ -83,15 +83,17 @@ class API {
   }
   async delete<T>(
     endpoint: string,
-    { searchParams, ...nextOptions }: EndpointOptions = {}
+    { body, ...nextOptions }: EndpointOptions = {}
   ) {
-    const url = [BASE_URL, endpoint, searchParams].filter(Boolean).join("/");
-    const response = await fetch(url, {
+    const initRequest = {
       method: "DELETE",
       headers: this.headers,
       ...nextOptions,
-      body: JSON.stringify(nextOptions.body),
-    });
+      body: JSON.stringify(body),
+    };
+    const finalRequest = this.generateRequest(initRequest);
+    const url = [BASE_URL, endpoint].filter(Boolean).join("/");
+    const response = await fetch(url, finalRequest);
     if (!response.ok) {
       throw new Error(response.statusText);
     }

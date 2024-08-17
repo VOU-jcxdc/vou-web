@@ -1,8 +1,8 @@
 import { PagedData, PagingSchema } from "@/types";
+import { EventStatusEnum } from "@/types/enums";
 
 import api from "./httpRequests";
 import { fromPageToOffset, generateSearchParams } from "./utils";
-import { EventStatusEnum } from "@/types/enums";
 
 export type Event = {
   id: string;
