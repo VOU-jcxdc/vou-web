@@ -1,4 +1,3 @@
-"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -18,12 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Voucher } from "@/services/vouchers";
 import { VoucherType, VoucherTypeEnum } from "@/types/enums";
@@ -67,12 +61,9 @@ export default function VoucherForm({
         <DialogTitle>{editMode ? "Edit" : "Create"} voucher</DialogTitle>
       </DialogHeader>
       <Form {...form}>
-        <form
-          className="flex flex-col gap-4 mb-6"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="mb-6 flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <ScrollArea>
-            <div className="h-80 flex flex-col gap-4 mb-6">
+            <div className="mb-6 flex h-80 flex-col gap-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -80,11 +71,7 @@ export default function VoucherForm({
                   <FormItem>
                     <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder="Voucher name"
-                        error={Boolean(errors.name)}
-                      />
+                      <Input {...field} placeholder="Voucher name" error={Boolean(errors.name)} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,10 +84,7 @@ export default function VoucherForm({
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        placeholder="Enter voucher's description"
-                      />
+                      <Textarea {...field} placeholder="Enter voucher's description" />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -132,22 +116,14 @@ export default function VoucherForm({
                           }}
                           defaultValue="amount"
                         >
-                          <SelectTrigger className="capitalize w-40">
-                            {form.watch("type") == VoucherTypeEnum.rate
-                              ? "%"
-                              : "VND"}
+                          <SelectTrigger className="w-40 capitalize">
+                            {form.watch("type") == VoucherTypeEnum.rate ? "%" : "VND"}
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem
-                              value={VoucherTypeEnum.amount}
-                              className="capitalize"
-                            >
+                            <SelectItem value={VoucherTypeEnum.amount} className="capitalize">
                               VND
                             </SelectItem>
-                            <SelectItem
-                              value={VoucherTypeEnum.rate}
-                              className="capitalize"
-                            >
+                            <SelectItem value={VoucherTypeEnum.rate} className="capitalize">
                               %
                             </SelectItem>
                           </SelectContent>
@@ -182,7 +158,7 @@ export default function VoucherForm({
                   <FormItem>
                     <FormLabel>Duration</FormLabel>
                     <FormControl>
-                      <div className="flex gap-4 items-center">
+                      <div className="flex items-center gap-4">
                         <Input
                           {...form.register("duration", {
                             valueAsNumber: true,
@@ -203,16 +179,13 @@ export default function VoucherForm({
                 name="quantity"
                 render={() => (
                   <FormItem>
-                    <div className="flex gap-2 items-center">
+                    <div className="flex items-center gap-2">
                       <FormLabel className="mr-4">Quantity</FormLabel>
                       <Button
                         type="button"
                         variant="ghost"
                         onClick={() => {
-                          form.setValue(
-                            "quantity",
-                            form.getValues("quantity") - 1
-                          );
+                          form.setValue("quantity", form.getValues("quantity") - 1);
                         }}
                       >
                         <Minus size={16} />
@@ -233,10 +206,7 @@ export default function VoucherForm({
                         type="button"
                         variant="ghost"
                         onClick={() => {
-                          form.setValue(
-                            "quantity",
-                            form.getValues("quantity") - 1
-                          );
+                          form.setValue("quantity", form.getValues("quantity") - 1);
                         }}
                       >
                         <Plus size={16} />
@@ -251,7 +221,7 @@ export default function VoucherForm({
                 name="usageMode"
                 render={({ field }) => (
                   <FormItem>
-                    <div className="flex gap-2 items-center">
+                    <div className="flex items-center gap-2">
                       <FormLabel className="mr-4">Usage mode</FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -263,17 +233,13 @@ export default function VoucherForm({
                             <FormControl>
                               <RadioGroupItem value="online" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Online
-                            </FormLabel>
+                            <FormLabel className="font-normal">Online</FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-3 space-y-0">
                             <FormControl>
                               <RadioGroupItem value="offline" />
                             </FormControl>
-                            <FormLabel className="font-normal">
-                              Offline
-                            </FormLabel>
+                            <FormLabel className="font-normal">Offline</FormLabel>
                           </FormItem>
                         </RadioGroup>
                       </FormControl>

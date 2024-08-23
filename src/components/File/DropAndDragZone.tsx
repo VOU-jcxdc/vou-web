@@ -1,5 +1,3 @@
-"use client";
-
 import ImageFileItem from "@components/File/ImageFileItem";
 import { Button } from "@components/ui/button";
 import { Upload } from "lucide-react";
@@ -16,13 +14,7 @@ interface RejectedFile {
   errors: { code: string; message: string }[];
 }
 
-const DropAndDragZone = ({
-  className,
-  maxFiles,
-}: {
-  className?: string;
-  maxFiles?: number;
-}) => {
+const DropAndDragZone = ({ className, maxFiles }: { className?: string; maxFiles?: number }) => {
   const { saveFiles } = useFiles();
 
   const maxFilesNumber = maxFiles ?? 10;
@@ -40,9 +32,7 @@ const DropAndDragZone = ({
 
         setFiles((previousFiles) =>
           previousFiles.concat(
-            acceptedFiles.map((file) =>
-              Object.assign(file, { preview: URL.createObjectURL(file) })
-            )
+            acceptedFiles.map((file) => Object.assign(file, { preview: URL.createObjectURL(file) }))
           )
         );
       }
@@ -104,7 +94,7 @@ const DropAndDragZone = ({
         <input className="" {...getInputProps({ name: "file" })} />
         <div
           className={cn(
-            "flex w-full flex-col items-center justify-center gap-2 border border-dashed min-h-40 rounded hover:cursor-pointer hover:border-primary/80 hover:bg-primary/10",
+            "flex min-h-40 w-full flex-col items-center justify-center gap-2 rounded border border-dashed hover:cursor-pointer hover:border-primary/80 hover:bg-primary/10",
             isDragActive ? "border-primary/80 bg-primary/10" : ""
           )}
         >
@@ -138,14 +128,9 @@ const DropAndDragZone = ({
             <h3 className="title mt-6 border-b text-sm">Thêm thất bại</h3>
             <ul className="mt-3 flex flex-col">
               {rejected.map(({ file, errors }) => (
-                <li
-                  key={file.name}
-                  className="flex items-start justify-between"
-                >
+                <li key={file.name} className="flex items-start justify-between">
                   <div>
-                    <p className="text-sm font-medium text-stone-500">
-                      {file.name}
-                    </p>
+                    <p className="text-sm font-medium text-stone-500">{file.name}</p>
                     <ul className="text-[12px] text-red-400">
                       {errors.map((error) => (
                         <li key={error.code}>{error.message}</li>

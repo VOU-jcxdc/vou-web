@@ -28,12 +28,9 @@ export const useCreateVouchers = (eventId: string) => {
   return useMutation({
     mutationFn: createVouchers,
     onSuccess: (returnData) => {
-      queryClient.setQueryData(
-        voucherKeys.detail(eventId),
-        (prev: Voucher[]) => {
-          return [...prev, ...returnData.vouchers];
-        }
-      );
+      queryClient.setQueryData(voucherKeys.detail(eventId), (prev: Voucher[]) => {
+        return [...prev, ...returnData.vouchers];
+      });
       toast({
         description: "Vouchers created successfully!",
       });
@@ -53,14 +50,11 @@ export const useUpdateVoucher = (eventId: string) => {
   return useMutation({
     mutationFn: updateVoucher,
     onSuccess: (returnData) => {
-      queryClient.setQueryData(
-        voucherKeys.detail(eventId),
-        (prev: Voucher[]) => {
-          return prev.map((voucher) => {
-            return voucher.id === returnData.id ? returnData : voucher;
-          });
-        }
-      );
+      queryClient.setQueryData(voucherKeys.detail(eventId), (prev: Voucher[]) => {
+        return prev.map((voucher) => {
+          return voucher.id === returnData.id ? returnData : voucher;
+        });
+      });
       toast({
         description: "Voucher updated successfully",
       });
@@ -80,14 +74,9 @@ export const useDeleteVoucher = (eventId: string) => {
   return useMutation({
     mutationFn: deleteVoucher,
     onSuccess: (_, variables) => {
-      queryClient.setQueryData(
-        voucherKeys.detail(eventId),
-        (prev: Voucher[]) => {
-          return prev.filter(
-            (voucher) => !variables.voucherIds.includes(voucher.id)
-          );
-        }
-      );
+      queryClient.setQueryData(voucherKeys.detail(eventId), (prev: Voucher[]) => {
+        return prev.filter((voucher) => !variables.voucherIds.includes(voucher.id));
+      });
       toast({
         description: "Voucher deleted successfully!",
       });

@@ -1,13 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import {
-  getUser,
-  getUserProfile,
-  getUsers,
-  updateUser,
-  updateUserProfile,
-  User,
-} from "@/services";
+import { getUser, getUserProfile, getUsers, updateUser, updateUserProfile, User } from "@/services";
 import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";

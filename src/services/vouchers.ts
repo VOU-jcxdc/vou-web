@@ -1,6 +1,6 @@
 import { VoucherType, VoucherUsageMode } from "@/types/enums";
 
-import api from "./httpRequests";
+import api from "./kyInstance";
 import omit from "lodash.omit";
 
 export type Voucher = {
@@ -28,9 +28,11 @@ type DeleteVoucherParams = {
 };
 
 export const getVouchers = async (eventId: string) => {
-  const data = await api.get<{ quantity: number; voucher: Voucher }[]>(
-    `events/${eventId}/vouchers`
-  );
+  const data = (
+    await api
+      .get(`events/${eventId}/vouchers`)
+      .json<{ data: { quantity: number; voucher: Voucher }[] }>()
+  ).data;
   return data.map((item) => {
     return {
       ...item.voucher,
@@ -38,14 +40,20 @@ export const getVouchers = async (eventId: string) => {
     };
   });
 };
+
 export const createVouchers = async (body: CreateVouchersParams) => {
-  return await api.post<CreateVouchersParams>(`vouchers`, { body });
+  return (await api.post(`vouchers`, { json: body }).json<{ data: CreateVouchersParams }>()).data;
 };
+
 export const updateVoucher = async (voucher: UpdateVoucherParams) => {
-  return await api.put<UpdateVoucherParams>(`vouchers/${voucher.id}`, {
-    body: omit(voucher, "id"),
-  });
+  return (
+    await api
+      .put(`vouchers/${voucher.id}`, {
+        json: omit(voucher, "id"),
+      })
+      .json<{ data: UpdateVoucherParams }>()
+  ).data;
 };
 export const deleteVoucher = async (body: DeleteVoucherParams) => {
-  return await api.delete<DeleteVoucherParams>(`vouchers`, { body });
+  return (await api.delete(`vouchers`, { json: body }).json<{ data: DeleteVoucherParams }>()).data;
 };

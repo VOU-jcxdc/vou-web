@@ -1,13 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { useRouter } from "@tanstack/react-router";
 
-import {
-  createEvent,
-  Event,
-  getEvent,
-  getEvents,
-  updateEvent,
-} from "@/services/events";
+import { createEvent, Event, getEvent, getEvents, updateEvent } from "@/services/events";
 import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
@@ -45,9 +39,9 @@ export const useUpdateEvent = (id: string) => {
           ...returnData,
         };
       });
-      const existingEvents = queryClient.getQueryData<
-        PagedData & { events: Event[] }
-      >(eventKeys.list());
+      const existingEvents = queryClient.getQueryData<PagedData & { events: Event[] }>(
+        eventKeys.list()
+      );
       if (existingEvents && existingEvents.events) {
         queryClient.setQueryData(
           eventKeys.list(),
@@ -90,7 +84,7 @@ export const useCreateEvent = () => {
       toast({
         description: "Create event successfully!",
       });
-      router.push(`/events`);
+      router.navigate({ to: `/events` });
     },
     onError: () => {
       toast({

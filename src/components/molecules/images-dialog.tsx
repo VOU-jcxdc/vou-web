@@ -17,12 +17,7 @@ type ImagesDialogProps = {
   onOpenChange: (open: boolean) => void;
 };
 
-export default function ImagesDialog({
-  onUpload,
-  title,
-  open,
-  onOpenChange,
-}: ImagesDialogProps) {
+export default function ImagesDialog({ onUpload, title, open, onOpenChange }: ImagesDialogProps) {
   const { files, clearFiles } = useFiles();
   return (
     <Dialog
@@ -40,7 +35,7 @@ export default function ImagesDialog({
       <DialogContent>
         <DialogHeader>{title}</DialogHeader>
         <DropAndDragZone maxFiles={3} />
-        <DialogFooter className="flex flex-row gap-4 justify-end">
+        <DialogFooter className="flex flex-row justify-end gap-4">
           <DialogClose asChild>
             <Button variant="outline">Cancel</Button>
           </DialogClose>

@@ -1,4 +1,4 @@
-import api from "@/services/httpRequests";
+import api, { apiAuth } from "./kyInstance";
 
 type Bucket = {
   id: string;
@@ -14,29 +14,39 @@ export type BucketParams = PresignedURLParams & {
   file: File;
 };
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_ENDPOINT || "http://localhost:3000";
 export const getFile = async (id: string) => {
-  return await fetch(`${BASE_URL}/files/${id}`);
+  return await apiAuth.get(`files/${id}`);
 };
 
-export const getPresignedURL = async (body: PresignedURLParams) => {
-  if (!body.id) {
-    return await api.post<Bucket>("files/presigned-url", {
-      body,
-    });
+export const getPresignedURL = async (params: PresignedURLParams) => {
+  if (!params.id) {
+    return (
+      await api
+        .post("files/presigned-url", {
+          json: params,
+        })
+        .json<{ data: Bucket }>()
+    ).data;
   }
-  return await api.put<Bucket>("files/presigned-url", {
-    body,
-  });
+  return (
+    await api
+      .put(`files/presigned-url/${params.id}`, {
+        json: {
+          filename: params.filename,
+        },
+      })
+      .json<{ data: Bucket }>()
+  ).data;
 };
 
 export const uploadConfirmation = async (id: string) => {
-  const state = await api.post<string>(`files/upload-confirmation`, {
-    body: {
-      id,
-    },
-  });
+  const state = await api
+    .post(`files/upload-confirmation`, {
+      json: {
+        id,
+      },
+    })
+    .json<string>();
   return {
     id,
     state,
