@@ -1,15 +1,10 @@
-"use client";
-
-export default async function uploadFileToCloudinary(
-  file: File
-): Promise<string> {
+export default async function uploadFileToCloudinary(file: File): Promise<string> {
   try {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "ml_default");
 
-    const cloudinaryUploadUrl =
-      "https://api.cloudinary.com/v1_1/ddoku9wa1/image/upload";
+    const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/ddoku9wa1/image/upload";
 
     const cloudinaryResponse = await fetch(cloudinaryUploadUrl, {
       method: "POST",

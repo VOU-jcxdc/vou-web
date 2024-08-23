@@ -1,5 +1,3 @@
-"use client";
-
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -90,10 +88,7 @@ export function DataTable<TData, TValue>({
       {/* Filters */}
       <div className="mb-4 flex items-center justify-between gap-4 sm:mb-2 sm:gap-2">
         {isSearchEnabled && (
-          <Input
-            placeholder="Search..."
-            className="w-[200px] border border-[#E5E7EB] h-9"
-          />
+          <Input placeholder="Search..." className="h-9 w-[200px] border border-[#E5E7EB]" />
         )}
         {/* <Button variant="outline" size="sm">
           <Filter className="h-4 w-4 mr-2" />
@@ -119,13 +114,10 @@ export function DataTable<TData, TValue>({
                       key={column.id}
                       className="capitalize"
                       checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}
                     >
-                      {columns_headers?.find(
-                        (col_hed) => col_hed.accessKey === column.id
-                      )?.name ?? column.id}
+                      {columns_headers?.find((col_hed) => col_hed.accessKey === column.id)?.name ??
+                        column.id}
                     </DropdownMenuCheckboxItem>
                   );
                 })}
@@ -135,9 +127,7 @@ export function DataTable<TData, TValue>({
       </div>
 
       {/* Table */}
-      <div
-        className={`w-full rounded-md ${isBorder ? "border" : "border-none"}`}
-      >
+      <div className={`w-full rounded-md ${isBorder ? "border" : "border-none"}`}>
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -147,10 +137,7 @@ export function DataTable<TData, TValue>({
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                        : flexRender(header.column.columnDef.header, header.getContext())}
                     </TableHead>
                   );
                 })}
@@ -167,20 +154,14 @@ export function DataTable<TData, TValue>({
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 w-full text-center"
-                >
+                <TableCell colSpan={columns.length} className="h-24 w-full text-center">
                   No data.
                 </TableCell>
               </TableRow>

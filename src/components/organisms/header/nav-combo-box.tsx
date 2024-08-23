@@ -1,16 +1,10 @@
-"use client";
-
 import { ChevronsUpDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const frameworks = [
   {
@@ -45,7 +39,7 @@ export default function NavCombobox() {
         <Button
           role="combobox"
           aria-expanded={open}
-          className="w-[150px] justify-between bg-background hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
+          className="hover:text-accent-foreground focus:text-accent-foreground w-[150px] justify-between bg-background hover:bg-accent focus:bg-accent focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
         >
           More Nav
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

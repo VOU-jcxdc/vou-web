@@ -1,7 +1,7 @@
 import { PagedData, PagingSchema } from "@/types";
 import { BrandField, UserGender, UserStatus } from "@/types/enums";
 
-import api from "./httpRequests";
+import api from "./kyInstance";
 import { fromPageToOffset, generateSearchParams } from "./utils";
 
 type UserBaseInfo = {
@@ -48,25 +48,27 @@ export type UpdateUserParams = Partial<User>;
 
 export const getUsers = async (params: PagingSchema) => {
   const searchParams = generateSearchParams(fromPageToOffset(params));
-  return await api.get<
-    PagedData & {
-      accounts: User[];
-    }
-  >("admin/users", { searchParams });
+  return (
+    await api.get("admin/users", { searchParams }).json<{
+      data: PagedData & {
+        accounts: User[];
+      };
+    }>()
+  ).data;
 };
 
 export const getUser = async (id: string) => {
-  return await api.get<User>(`admin/user/${id}`);
+  return (await api.get(`admin/user/${id}`).json<{ data: User }>()).data;
 };
 
-export const updateUser = async (body: UpdateUserParams) => {
-  return await api.put<User>(`admin/user/${body.id}`, { body });
+export const updateUser = async (params: UpdateUserParams) => {
+  return (await api.put(`admin/user/${params.id}`, { json: params }).json<{ data: User }>()).data;
 };
 
 export const getUserProfile = async () => {
-  return await api.get<User>(`user/profile`);
+  return (await api.get(`users/profile`).json<{ data: User }>()).data;
 };
 
-export const updateUserProfile = async (body: UpdateUserParams) => {
-  return await api.put<User>(`user/profile`, { body });
+export const updateUserProfile = async (params: UpdateUserParams) => {
+  return (await api.put(`user/profile`, { json: params }).json<{ data: User }>()).data;
 };

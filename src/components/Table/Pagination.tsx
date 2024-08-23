@@ -19,11 +19,9 @@ interface DataTablePaginationProps<TData> {
   table: Table<TData>;
 }
 
-export function DataTablePagination<TData>({
-  table,
-}: DataTablePaginationProps<TData>) {
+export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
   return (
-    <div className="flex flex-row items-center justify-end px-2 sm:flex-col sm:gap-4 gap-2">
+    <div className="flex flex-row items-center justify-end gap-2 px-2 sm:flex-col sm:gap-4">
       <div className="flex flex-row items-center gap-8">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
@@ -46,8 +44,7 @@ export function DataTablePagination<TData>({
           </Select>
         </div>
         <div className="flex w-fit items-center justify-center text-sm font-medium">
-          Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>
       </div>
       <div className="flex items-center space-x-2">

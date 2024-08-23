@@ -1,4 +1,3 @@
-"use client";
 import { ThemeProvider, useTheme } from "next-themes";
 import { Toaster } from "sonner";
 

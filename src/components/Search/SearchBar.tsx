@@ -1,5 +1,3 @@
-"use client";
-
 import { Gamepad2, Newspaper, Search, ShoppingCart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

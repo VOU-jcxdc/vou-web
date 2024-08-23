@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Select,
   SelectContent,
@@ -16,15 +14,10 @@ import district from "@/static-data/districts.json";
 import province from "@/static-data/provinces.json";
 
 export default function FormAddressPicker() {
-  const { addressValues, setProvince, setDistrict, setCommune } =
-    useAddressSelects();
+  const { addressValues, setProvince, setDistrict, setCommune } = useAddressSelects();
 
-  const districtsInProvince = district.filter(
-    (dis) => dis.idProvince === addressValues.provinceId
-  );
-  const communesInDistrict = communes.filter(
-    (com) => com.idDistrict === addressValues.districtId
-  );
+  const districtsInProvince = district.filter((dis) => dis.idProvince === addressValues.provinceId);
+  const communesInDistrict = communes.filter((com) => com.idDistrict === addressValues.districtId);
 
   return (
     <div className="mt-2 flex flex-col gap-2">
@@ -38,11 +31,7 @@ export default function FormAddressPicker() {
       >
         <SelectTrigger className="w-full">
           <SelectValue
-            placeholder={
-              addressValues.province !== ""
-                ? addressValues.province
-                : "Chọn tỉnh"
-            }
+            placeholder={addressValues.province !== "" ? addressValues.province : "Chọn tỉnh"}
           />
         </SelectTrigger>
         <SelectContent>
@@ -69,11 +58,7 @@ export default function FormAddressPicker() {
       >
         <SelectTrigger className="w-full">
           <SelectValue
-            placeholder={
-              addressValues.district !== ""
-                ? addressValues.district
-                : "Chọn quận"
-            }
+            placeholder={addressValues.district !== "" ? addressValues.district : "Chọn quận"}
           />
         </SelectTrigger>
         <SelectContent>
@@ -99,21 +84,14 @@ export default function FormAddressPicker() {
       >
         <SelectTrigger className="w-full">
           <SelectValue
-            placeholder={
-              addressValues.commune !== ""
-                ? addressValues.commune
-                : "Chọn phường"
-            }
+            placeholder={addressValues.commune !== "" ? addressValues.commune : "Chọn phường"}
           />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
             <SelectLabel>Phường, xã</SelectLabel>
             {communesInDistrict.map((com, index) => (
-              <SelectItem
-                key={index}
-                value={JSON.stringify({ name: com.name, id: com.idCommune })}
-              >
+              <SelectItem key={index} value={JSON.stringify({ name: com.name, id: com.idCommune })}>
                 {com.name}
               </SelectItem>
             ))}
