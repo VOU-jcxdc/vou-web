@@ -34,6 +34,7 @@ import { DataTablePagination } from "./Pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  totalPages: number;
   isPaginationEnabled?: boolean;
   isCollumnVisibilityEnabled?: boolean;
   isSearchEnabled?: boolean;
@@ -49,6 +50,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  totalPages,
   isPaginationEnabled = true,
   isCollumnVisibilityEnabled = true,
   isSearchEnabled = true,
@@ -145,8 +147,8 @@ export function DataTable<TData, TValue>({
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+            {table.getCoreRowModel().rows?.length ? (
+              table.getCoreRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
@@ -173,7 +175,7 @@ export function DataTable<TData, TValue>({
       {/* Pagination */}
       {isPaginationEnabled && (
         <div className="my-4">
-          <DataTablePagination table={table} />
+          <DataTablePagination table={table} totalPages={totalPages} />
         </div>
       )}
     </>

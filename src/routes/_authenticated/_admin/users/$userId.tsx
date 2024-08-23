@@ -21,6 +21,7 @@ import { Role, UserStatus } from "@/types/enums";
 
 import AdminForm from "@components/organisms/update-admin-form";
 import BrandForm from "@components/organisms/update-brand-form";
+import PlayerForm from "@components/organisms/player-detail-form";
 
 export const Route = createFileRoute("/_authenticated/_admin/users/$userId")({
   component: UserDetailPage,
@@ -83,8 +84,10 @@ function UserDetailPage() {
         {isSuccess ? (
           data.role == Role.ADMIN ? (
             <AdminForm user={data} />
+          ) : data.role == Role.BRAND ? (
+            <BrandForm user={data} />
           ) : (
-            data.role == Role.BRAND && <BrandForm user={data} />
+            data.role == Role.PLAYER && <PlayerForm user={data} />
           )
         ) : null}
       </div>

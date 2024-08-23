@@ -35,6 +35,7 @@ function UsersPage() {
               <DataTable
                 columns={columns}
                 data={data.accounts}
+                totalPages={Math.floor((data.total - 1) / data.limit) + 1}
                 isPaginationEnabled={true}
                 defaultPageSize={10}
               />

@@ -6,6 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 import ErrorFallback from "@/components/ErrorFallback";
 import PageNotFound from "@/components/PageNotFound";
+import { Toaster } from "@/components/ui/toaster";
 import { routeTree } from "@/routeTree.gen";
 
 export const queryClient = new QueryClient({
@@ -42,9 +43,9 @@ function App() {
   return (
     <ErrorBoundary fallback={<ErrorFallback />}>
       <QueryClientProvider client={queryClient}>
-        {" "}
         <RouterProvider router={router} />
         <ReactQueryDevtools />
+        <Toaster />
       </QueryClientProvider>
     </ErrorBoundary>
   );

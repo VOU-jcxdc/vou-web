@@ -37,6 +37,5 @@ export const createEvent = async (body: CreateEventParams) => {
 };
 
 export const updateEvent = async (body: UpdateEventParams) => {
-  // return await api.put<Event>(`events/${body.id}`, { body });
-  return (await api.put("events", { json: body }).json<{ data: Event }>()).data;
+  return (await api.put(`events/${body.id}`, { json: body }).json<{ data: Event }>()).data;
 };

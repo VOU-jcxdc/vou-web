@@ -86,11 +86,13 @@ export const useCreateEvent = () => {
       });
       router.navigate({ to: `/events` });
     },
-    onError: () => {
+    onError: (error) => {
+      console.log(error);
       toast({
         description: "Failed to create event!",
         variant: "destructive",
       });
+      console.log("toast");
     },
   });
 };
