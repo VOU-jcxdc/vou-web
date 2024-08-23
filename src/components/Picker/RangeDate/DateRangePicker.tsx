@@ -1,14 +1,9 @@
-"use client";
 import "moment/locale/vi";
 
 import { Button } from "@components/ui/button";
 import { Calendar } from "@components/ui/calendar";
 import { Label } from "@components/ui/label";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -16,11 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@components/ui/select";
-import {
-  CheckIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@radix-ui/react-icons";
+import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "@radix-ui/react-icons";
 import { CalendarIcon } from "lucide-react";
 import { FC, useEffect, useRef, useState } from "react";
 
@@ -80,9 +71,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 
   // Refs to store the values of range and rangeCompare when the date picker is opened
   const openedRangeRef = useRef<DateRange | undefined>();
-  const [selectedPreset, setSelectedPreset] = useState<string | undefined>(
-    undefined
-  );
+  const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
   const [isSmallScreen, setIsSmallScreen] = useState(
     typeof window !== "undefined" ? window.innerWidth < 960 : false
   );
@@ -130,11 +119,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       case "thisYear":
         from.setMonth(0, 1);
         from.setHours(0, 0, 0, 0);
-        to.setFullYear(
-          to.getFullYear(),
-          new Date().getMonth(),
-          new Date().getDate()
-        );
+        to.setFullYear(to.getFullYear(), new Date().getMonth(), new Date().getDate());
         to.setHours(23, 59, 59, 999);
         break;
       case "lastYear":
@@ -166,14 +151,10 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       const presetRange = getPresetRange(preset.name);
 
       const normalizedRangeFrom = new Date(range.from.setHours(0, 0, 0, 0));
-      const normalizedPresetFrom = new Date(
-        presetRange.from.setHours(0, 0, 0, 0)
-      );
+      const normalizedPresetFrom = new Date(presetRange.from.setHours(0, 0, 0, 0));
 
       const normalizedRangeTo = new Date(range.to?.setHours(0, 0, 0, 0) ?? 0);
-      const normalizedPresetTo = new Date(
-        presetRange.to?.setHours(0, 0, 0, 0) ?? 0
-      );
+      const normalizedPresetTo = new Date(presetRange.to?.setHours(0, 0, 0, 0) ?? 0);
 
       if (
         normalizedRangeFrom.getTime() === normalizedPresetFrom.getTime() &&
@@ -219,8 +200,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
   const areRangesEqual = (a?: DateRange, b?: DateRange) => {
     if (!a || !b) return a === b; // If either is undefined, return true if both are undefined
     return (
-      a.from.getTime() === b.from.getTime() &&
-      (!a.to || !b.to || a.to.getTime() === b.to.getTime())
+      a.from.getTime() === b.from.getTime() && (!a.to || !b.to || a.to.getTime() === b.to.getTime())
     );
   };
 
@@ -239,23 +219,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
       }}
     >
       <PopoverTrigger asChild>
-        <Button
-          size="lg"
-          variant="outline"
-          className="h-9 w-full justify-start"
-        >
-          <div className="-ml-5 text-left inline-flex gap-2 items-center">
+        <Button size="lg" variant="outline" className="h-9 w-full justify-start">
+          <div className="-ml-5 inline-flex items-center gap-2 text-left">
             <CalendarIcon width={16} className="inline-block" />
-            {`${formatVNDate(range.from)}${
-              range.to != null ? " - " + formatVNDate(range.to) : ""
-            }`}
+            {`${formatVNDate(range.from)}${range.to != null ? " - " + formatVNDate(range.to) : ""}`}
           </div>
           <div className="-mr-6 scale-125 pl-1 opacity-60">
-            {isOpen ? (
-              <ChevronUpIcon width={16} />
-            ) : (
-              <ChevronDownIcon width={16} />
-            )}
+            {isOpen ? <ChevronUpIcon width={16} /> : <ChevronDownIcon width={16} />}
           </div>
         </Button>
       </PopoverTrigger>
@@ -275,8 +245,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                     <DateInput
                       value={range.from}
                       onChange={(date) => {
-                        const toDate =
-                          range.to == null || date > range.to ? date : range.to;
+                        const toDate = range.to == null || date > range.to ? date : range.to;
                         setRange((prevRange) => ({
                           ...prevRange,
                           from: date,
@@ -329,11 +298,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                   selected={range}
                   numberOfMonths={isSmallScreen ? 1 : 2}
                   defaultMonth={
-                    new Date(
-                      new Date().setMonth(
-                        new Date().getMonth() - (isSmallScreen ? 0 : 1)
-                      )
-                    )
+                    new Date(new Date().setMonth(new Date().getMonth() - (isSmallScreen ? 0 : 1)))
                   }
                 />
               </div>
@@ -382,5 +347,4 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 };
 
 DateRangePicker.displayName = "DateRangePicker";
-DateRangePicker.filePath =
-  "libs/shared/ui-kit/src/lib/date-range-picker/date-range-picker.tsx";
+DateRangePicker.filePath = "libs/shared/ui-kit/src/lib/date-range-picker/date-range-picker.tsx";

@@ -34,7 +34,6 @@ const combine = async ({ id: fileId, filename, file }: BucketParams) => {
 
 export const useUploadFile = () => {
   return useMutation({
-    mutationFn: ({ id, filename, file }: BucketParams) =>
-      combine({ id, filename, file }),
+    mutationFn: ({ id, filename, file }: BucketParams) => combine({ id, filename, file }),
   });
 };

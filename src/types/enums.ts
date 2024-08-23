@@ -32,3 +32,17 @@ export enum EventStatusEnum {
   ONGOING = "ongoing",
   FINISHED = "finished",
 }
+
+export enum VoucherUsageModeEnum {
+  online = "online",
+  offline = "offline",
+}
+
+export type VoucherUsageMode = keyof typeof VoucherUsageModeEnum;
+
+export enum VoucherTypeEnum {
+  amount = "amount",
+  rate = "rate",
+}
+
+export type VoucherType = keyof typeof VoucherTypeEnum;

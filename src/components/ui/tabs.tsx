@@ -1,5 +1,3 @@
-"use client";
-
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 
@@ -14,7 +12,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "bg-muted text-muted-foreground inline-flex h-10 items-center justify-center rounded-md p-1",
+      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
       className
     )}
     {...props}
@@ -52,4 +50,4 @@ const TabsContent = React.forwardRef<
 ));
 TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export { Tabs, TabsContent,TabsList, TabsTrigger };
+export { Tabs, TabsContent, TabsList, TabsTrigger };
