@@ -18,7 +18,7 @@ const api = ky.create({
       async (_, __, response) => {
         if (response.status === 401) {
           signOut();
-          throw redirect({ to: "/auth" });
+          throw redirect({ to: "/log-in" });
         }
       },
     ],

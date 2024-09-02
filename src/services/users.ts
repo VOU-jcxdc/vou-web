@@ -33,8 +33,8 @@ export type UserPlayer = UserBaseInfo & {
   role: "player";
   info: {
     id?: string;
-    name: string;
     gender: UserGender;
+    dob: string;
   };
 };
 

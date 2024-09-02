@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated")({
     });
     if (!user) {
       signOut();
-      return redirect({ to: "auth/log-in" });
+      return redirect({ to: "/log-in" });
     }
   },
   pendingComponent: () => {

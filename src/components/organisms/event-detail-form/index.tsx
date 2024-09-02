@@ -37,15 +37,15 @@ const formSchema = z.object({
     .string()
     .or(z.date())
     .transform((val) => {
-      if (typeof val !== "string") return val.toString();
-      return val;
+      if (typeof val !== "string") return val.toISOString();
+      return new Date(val).toISOString();
     }),
   endDate: z
     .string()
     .or(z.date())
     .transform((val) => {
-      if (typeof val !== "string") return val.toString();
-      return val;
+      if (typeof val !== "string") return val.toISOString();
+      return new Date(val).toISOString();
     }),
 });
 

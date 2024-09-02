@@ -8,13 +8,14 @@ import { useToast } from "../useToast";
 export const userKeys = {
   key: ["users"] as const,
   profile: () => [...userKeys.key, "profile"] as const,
-  list: () => [...userKeys.key] as const,
-  detail: (id: string) => [...userKeys.list(), "detail", id] as const,
+  list: (paging: PagingSchema) => [...userKeys.key, paging] as const,
+  lists: () => [...userKeys.key] as const,
+  detail: (id: string) => [...userKeys.lists(), "detail", id] as const,
 };
 
 export const useGetUsers = (params: PagingSchema) => {
   return useQuery({
-    queryKey: userKeys.list(),
+    queryKey: userKeys.list(params),
     queryFn: () => getUsers(params),
   });
 };
@@ -40,10 +41,10 @@ export const useUpdateUser = (id: string) => {
         PagedData & {
           accounts: User[];
         }
-      >(userKeys.list());
+      >(userKeys.lists());
       if (existingUsers && existingUsers.accounts) {
         queryClient.setQueryData(
-          userKeys.list(),
+          userKeys.lists(),
           (
             data: PagedData & {
               accounts: User[];

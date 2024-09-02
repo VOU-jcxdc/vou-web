@@ -37,6 +37,7 @@ function EventsPage() {
         <DataTable
           columns={columns}
           data={data.events}
+          totalPages={Math.floor((data.total - 1) / data.limit) + 1}
           isPaginationEnabled={true}
           defaultPageSize={10}
         />
