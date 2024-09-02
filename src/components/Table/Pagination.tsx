@@ -26,7 +26,6 @@ export function DataTablePagination<TData>({ totalPages }: DataTablePaginationPr
     strict: false,
   }) as { page: number; pageSize: number };
   const navigate = useNavigate();
-  console.log(totalPages);
 
   return (
     <div className="flex flex-row items-center justify-end gap-2 px-2 sm:flex-col sm:gap-4">
@@ -34,13 +33,13 @@ export function DataTablePagination<TData>({ totalPages }: DataTablePaginationPr
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <Select
-            value={pageSize.toString()}
+            value={pageSize ? pageSize.toString() : "10"}
             onValueChange={(value) => {
               navigate({ search: { ...restSearch, page, pageSize: Number(value) } });
             }}
           >
             <SelectTrigger className="h-8 w-[75px]">
-              <SelectValue placeholder={pageSize.toString()} />
+              <SelectValue placeholder={pageSize ? pageSize.toString() : "10"} />
             </SelectTrigger>
             <SelectContent side="top">
               {[5, 10, 20].map((pageSize) => (

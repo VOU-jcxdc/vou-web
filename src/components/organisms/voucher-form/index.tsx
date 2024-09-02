@@ -206,7 +206,7 @@ export default function VoucherForm({
                         type="button"
                         variant="ghost"
                         onClick={() => {
-                          form.setValue("quantity", form.getValues("quantity") - 1);
+                          form.setValue("quantity", form.getValues("quantity") + 1);
                         }}
                       >
                         <Plus size={16} />

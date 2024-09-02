@@ -11,28 +11,21 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-export type Game = {
-  id: string;
-  name: string;
-  image: string;
-  exchangeStatus: boolean;
-  instruction?: string;
-};
+import { Game } from "@/services/games";
 
 export const columns: ColumnDef<Game>[] = [
   {
     accessorKey: "id",
     header: "ID",
   },
-  {
-    accessorKey: "image",
-    header: "Image",
-    cell: ({ row }) => {
-      const game = row.original;
-      return <img src={game.image} alt={game.name} className="size-[100px] rounded-md" />;
-    },
-  },
+  // {
+  //   accessorKey: "image",
+  //   header: "Image",
+  //   cell: ({ row }) => {
+  //     const game = row.original;
+  //     return <img src={game.image} alt={game.name} className="size-[100px] rounded-md" />;
+  //   },
+  // },
   {
     accessorKey: "name",
     header: "Name",
@@ -71,7 +64,7 @@ export const columns: ColumnDef<Game>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(game.id)}>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(game.id ?? "")}>
               Copy game ID
             </DropdownMenuItem>
             <DropdownMenuItem asChild>

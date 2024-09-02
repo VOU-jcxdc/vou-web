@@ -12,6 +12,7 @@ export type Event = {
   description?: string;
   images: string[];
   status: EventStatusEnum;
+  gameId: string;
 };
 
 export type CreateEventParams = Omit<Event, "id" | "status">;
