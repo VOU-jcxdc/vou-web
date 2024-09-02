@@ -3,6 +3,7 @@ import { EventStatusEnum } from "@/types/enums";
 
 import api from "./kyInstance";
 import { fromPageToOffset, generateSearchParams } from "./utils";
+import { Voucher } from "./vouchers";
 
 export type Event = {
   id: string;
@@ -12,7 +13,8 @@ export type Event = {
   description?: string;
   images: string[];
   status: EventStatusEnum;
-  gameId: string;
+  gameId: string | null;
+  vouchers: Voucher[];
 };
 
 export type CreateEventParams = Omit<Event, "id" | "status">;

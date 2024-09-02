@@ -84,6 +84,7 @@ function CreateEventPage() {
   const onSubmit = (data: FormInputs) => {
     createMutation.mutate({
       ...data,
+      gameId: null,
       vouchers: [],
     });
   };

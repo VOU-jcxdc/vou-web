@@ -24,7 +24,7 @@ export const Route = createFileRoute("/_authenticated/_brand/events/$eventId/_$e
 });
 
 function GameDetail({ gameId }: { gameId: string }) {
-  const { data, isLoading, isSuccess, isError } = useGetGameDetail(gameId);
+  const { data, isSuccess } = useGetGameDetail(gameId);
   if (isSuccess && data)
     return (
       <>
@@ -42,7 +42,7 @@ function GameDetail({ gameId }: { gameId: string }) {
   return null;
 }
 function GameImg({ bucketId }: { bucketId: string }) {
-  const { data, isLoading, isSuccess, isError } = useGetFile(bucketId);
+  const { data, isSuccess } = useGetFile(bucketId);
   if (isSuccess)
     return <img src={data.url} alt={`Game ${bucketId}`} className="max-h-[10rem] object-cover" />;
   return null;

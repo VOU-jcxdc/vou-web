@@ -8,7 +8,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
@@ -41,7 +40,7 @@ const GameForm = ({ game }: { game: Game }) => {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty },
+    formState: { isDirty },
   } = form;
   const updateMutation = useUpdateGameDetail(game.id);
   const onSubmit = (data: FormInputs) => {

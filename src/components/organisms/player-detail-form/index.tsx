@@ -26,7 +26,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { bucketKeys, useGetFile, useUploadFile } from "@/hooks/react-query/useBucket";
 import { userKeys, useUpdateUser } from "@/hooks/react-query/useUsers";

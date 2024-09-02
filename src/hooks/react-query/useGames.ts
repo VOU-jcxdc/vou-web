@@ -3,13 +3,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Game,
   getGamesInTheSystem,
-  updateGameInEvent,
   updateGameInTheSystem,
   UpdateGameParams,
 } from "@/services/games";
 import { useToast } from "../useToast";
-import { Event, UpdateEventParams } from "@/services/events";
-import { eventKeys } from "./useEvents";
 
 export const gameKeys = {
   key: ["games"] as const,
