@@ -3,6 +3,7 @@ import { EventStatusEnum } from "@/types/enums";
 
 import api from "./kyInstance";
 import { fromPageToOffset, generateSearchParams } from "./utils";
+import { Voucher } from "./vouchers";
 
 export type Event = {
   id: string;
@@ -12,6 +13,8 @@ export type Event = {
   description?: string;
   images: string[];
   status: EventStatusEnum;
+  gameId: string | null;
+  vouchers: Voucher[];
 };
 
 export type CreateEventParams = Omit<Event, "id" | "status">;
@@ -37,6 +40,5 @@ export const createEvent = async (body: CreateEventParams) => {
 };
 
 export const updateEvent = async (body: UpdateEventParams) => {
-  // return await api.put<Event>(`events/${body.id}`, { body });
-  return (await api.put("events", { json: body }).json<{ data: Event }>()).data;
+  return (await api.put(`events/${body.id}`, { json: body }).json<{ data: Event }>()).data;
 };

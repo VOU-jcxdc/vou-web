@@ -91,10 +91,7 @@ function SignIn() {
               )}
             />
             <div className="flex w-full flex-row-reverse">
-              <Link
-                to="/auth/forget-password"
-                className="text-sm text-foreground hover:text-primary/90"
-              >
+              <Link to="/forget-password" className="text-sm text-foreground hover:text-primary/90">
                 Forget Password
               </Link>
             </div>

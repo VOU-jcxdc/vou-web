@@ -1,6 +1,6 @@
 export enum Role {
   ADMIN = "admin",
-  PLAYER = "user",
+  PLAYER = "player",
   BRAND = "brand",
 }
 
@@ -46,3 +46,8 @@ export enum VoucherTypeEnum {
 }
 
 export type VoucherType = keyof typeof VoucherTypeEnum;
+
+export enum GameEnum {
+  REALTIME = "realtime_quiz_game",
+  SHAKE = "shake_game",
+}
