@@ -3,7 +3,6 @@ import { BrandField } from "@/types/enums";
 import { apiAuth } from "@/services/kyInstance";
 import { AuthUser } from "@/hooks/zustand/useAuthUser";
 import { jwtDecode } from "jwt-decode";
-import { queryClient } from "@/App";
 
 const delay = 500;
 const localStorageTokenKey = "auth_client_token";

@@ -1,5 +1,4 @@
 /* eslint-disable tailwindcss/no-custom-classname */
-import notFoundImage from "@/assets/images/not-found-page.jpg";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 
