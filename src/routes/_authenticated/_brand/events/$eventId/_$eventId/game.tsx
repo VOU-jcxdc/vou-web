@@ -1,5 +1,6 @@
 import ItemsSection from "@/components/organisms/items-section";
 import QuizSection from "@/components/organisms/quiz-section";
+import RecipesSection from "@/components/organisms/recipes-section";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -37,7 +38,12 @@ function GameDetail({ gameId }: { gameId: string }) {
           <strong>Instructions: </strong>
           {data.instruction}
         </div>
-        {data.type == GameEnum.SHAKE && <ItemsSection />}
+        {data.type == GameEnum.SHAKE && (
+          <>
+            <ItemsSection />
+            <RecipesSection />
+          </>
+        )}
         {data.type == GameEnum.REALTIME && <QuizSection />}
       </>
     );

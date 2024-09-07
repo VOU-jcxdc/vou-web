@@ -1,5 +1,5 @@
 import { Button } from "@components/ui/button";
-import { Check, Trash, Upload } from "lucide-react";
+import { Trash, Upload } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -81,9 +81,9 @@ const DropAndDragZoneGeneralFile = ({
     saveFiles(files);
   }, [files, saveFiles]);
 
-  const removeFile = (name: string) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
-  };
+  // const removeFile = (name: string) => {
+  //   setFiles((files) => files.filter((file) => file.name !== name));
+  // };
 
   // const removeAll = () => {
   //   setFiles([]);

@@ -10,9 +10,11 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "../useToast";
 import { eventKeys } from "./useEvents";
+import { createGameRecipe } from "@/services";
 
 export const itemKeys = {
   key: (id: string) => [...eventKeys.detail(id), "items"],
+  recipeList: (eventId: string) => [...eventKeys.detail(eventId), "recipes"],
 };
 export const useCreateShakeGameItems = (eventId: string) => {
   const queryClient = useQueryClient();
@@ -87,6 +89,26 @@ export const useDeleteShakeGameItem = (eventId: string) => {
     onError: () => {
       toast({
         title: "Delete item failed!",
+        variant: "destructive",
+      });
+    },
+  });
+};
+
+export const useCreateShakeGameRecipe = (_: string) => {
+  // const queryClient = useQueryClient();
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: createGameRecipe,
+    onSuccess: (_) => {
+      toast({
+        title: "Create recipes successfully!",
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      toast({
+        title: "Failed to create recipes!",
         variant: "destructive",
       });
     },
