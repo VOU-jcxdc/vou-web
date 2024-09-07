@@ -51,3 +51,10 @@ export enum GameEnum {
   REALTIME = "realtime_quiz_game",
   SHAKE = "shake_game",
 }
+
+export enum RecipeTargetEnum {
+  item = "item",
+  voucher = "voucher",
+}
+
+export type RecipeTarget = keyof typeof RecipeTargetEnum;

@@ -2,19 +2,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "@tanstack/react-router";
 
 import { createEvent, Event, getEvent, getEvents, updateEvent } from "@/services/events";
-import { PagedData, PagingSchema } from "@/types";
+import { PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
 
 export const eventKeys = {
   key: ["events"] as const,
-  list: () => [...eventKeys.key] as const,
-  detail: (id: string) => [...eventKeys.list(), "detail", id] as const,
+  list: (paging: PagingSchema) => [...eventKeys.key, "list", paging] as const,
+  detail: (id: string) => [...eventKeys.key, "detail", id] as const,
 };
 
 export const useGetEvents = (params: PagingSchema) => {
   return useQuery({
-    queryKey: eventKeys.list(),
+    queryKey: eventKeys.list(params),
     queryFn: () => getEvents(params),
   });
 };
@@ -39,26 +39,7 @@ export const useUpdateEvent = (id: string) => {
           ...returnData,
         };
       });
-      const existingEvents = queryClient.getQueryData<PagedData & { events: Event[] }>(
-        eventKeys.list()
-      );
-      if (existingEvents && existingEvents.events) {
-        queryClient.setQueryData(
-          eventKeys.list(),
-          (
-            data: PagedData & {
-              events: Event[];
-            }
-          ) => {
-            return {
-              ...data,
-              events: data.events.map((event) => {
-                return event.id === id ? { ...event, ...returnData } : event;
-              }),
-            };
-          }
-        );
-      }
+      queryClient.invalidateQueries({ queryKey: [...eventKeys.key, "list"] });
       toast({
         description: "Update event successfully!",
       });
@@ -79,7 +60,7 @@ export const useCreateEvent = () => {
   return useMutation({
     mutationFn: createEvent,
     onSuccess: (returnData: Event) => {
-      queryClient.invalidateQueries({ queryKey: eventKeys.list() });
+      queryClient.invalidateQueries({ queryKey: [...eventKeys.key, "list"] });
       queryClient.setQueryData(eventKeys.detail(returnData.id), returnData);
       toast({
         description: "Create event successfully!",

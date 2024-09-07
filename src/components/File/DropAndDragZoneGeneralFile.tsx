@@ -1,6 +1,5 @@
-import ImageFileItem from "@components/File/ImageFileItem";
 import { Button } from "@components/ui/button";
-import { Upload } from "lucide-react";
+import { Trash, Upload } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { toast } from "sonner";
@@ -14,7 +13,13 @@ interface RejectedFile {
   errors: { code: string; message: string }[];
 }
 
-const DropAndDragZone = ({ className, maxFiles }: { className?: string; maxFiles?: number }) => {
+const DropAndDragZoneGeneralFile = ({
+  className,
+  maxFiles,
+}: {
+  className?: string;
+  maxFiles?: number;
+}) => {
   const { saveFiles } = useFiles();
 
   const maxFilesNumber = maxFiles ?? 10;
@@ -76,9 +81,9 @@ const DropAndDragZone = ({ className, maxFiles }: { className?: string; maxFiles
     saveFiles(files);
   }, [files, saveFiles]);
 
-  const removeFile = (name: string) => {
-    setFiles((files) => files.filter((file) => file.name !== name));
-  };
+  // const removeFile = (name: string) => {
+  //   setFiles((files) => files.filter((file) => file.name !== name));
+  // };
 
   // const removeAll = () => {
   //   setFiles([]);
@@ -108,19 +113,22 @@ const DropAndDragZone = ({ className, maxFiles }: { className?: string; maxFiles
       <section className="mb-4 mt-6">
         {/* Accepted files */}
         {files?.length > 0 && (
-          <>
-            <h3 className="title mt-6 border-b text-sm">Thêm thành công</h3>
-            <div className="mt-4 grid w-fit grid-cols-6 gap-3 sm:grid-cols-4">
-              {files.map((file) => (
-                <ImageFileItem
-                  key={file.name}
-                  image={file.preview}
-                  name={file.name}
-                  removeHandler={() => removeFile(file.name)}
-                />
-              ))}
-            </div>
-          </>
+          <div className="mt-4 flex w-fit flex-col gap-3 sm:grid-cols-4">
+            {files.map((file) => (
+              <div className="inline-flex items-center">
+                {file.name}
+                <Button
+                  variant="ghost"
+                  className="text-destructive"
+                  onClick={() => {
+                    setFiles((files) => files.filter((f) => f.name !== file.name));
+                  }}
+                >
+                  <Trash size={20} />
+                </Button>
+              </div>
+            ))}
+          </div>
         )}
 
         {/* Rejected Files */}
@@ -155,4 +163,4 @@ const DropAndDragZone = ({ className, maxFiles }: { className?: string; maxFiles
   );
 };
 
-export default DropAndDragZone;
+export default DropAndDragZoneGeneralFile;
