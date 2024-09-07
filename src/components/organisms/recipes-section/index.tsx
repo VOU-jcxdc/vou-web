@@ -1,6 +1,6 @@
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { CircleAlert, Loader, Minus, Plus, PlusCircle, Equal, Ticket } from "lucide-react";
+import { Minus, Plus, Equal, Ticket } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useFieldArray, useForm } from "react-hook-form";
@@ -18,7 +18,6 @@ import {
 import { RecipeTargetEnum } from "@/types/enums";
 import { Card } from "@/components/ui/card";
 import { useGetVouchers } from "@/hooks/react-query/useVouchers";
-import { Command, CommandItem, CommandList } from "@/components/ui/command";
 
 const recipeSchema = z.object({
   itemRecipe: z
@@ -39,20 +38,14 @@ type RecipeSchema = z.infer<typeof recipeSchema>;
 
 export default function RecipesSection() {
   const { eventId } = Route.useParams();
-  const { isLoading, isSuccess, isError, data } = useGetShakeGameItems(eventId);
+  const { data } = useGetShakeGameItems(eventId);
   const { data: vouchers } = useGetVouchers(eventId);
   const createRecipeMutation = useCreateShakeGameRecipe(eventId);
   const form = useForm<RecipeSchema>({
     resolver: zodResolver(recipeSchema),
   });
-  const {
-    control,
-    setValue,
-    getValues,
-    register,
-    formState: { errors },
-  } = form;
-  const { fields, append, remove } = useFieldArray({ control, name: "itemRecipe" });
+  const { control, setValue, getValues, register } = form;
+  const { fields, append } = useFieldArray({ control, name: "itemRecipe" });
 
   return (
     <div>
@@ -147,7 +140,7 @@ export default function RecipesSection() {
           {fields.length < 2 && (
             <Card
               className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-lg"
-              onClick={() => append({})}
+              onClick={() => append({ itemId: "", quantity: 1 })}
             >
               Add ingredient
             </Card>

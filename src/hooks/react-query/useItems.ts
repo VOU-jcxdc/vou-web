@@ -95,12 +95,12 @@ export const useDeleteShakeGameItem = (eventId: string) => {
   });
 };
 
-export const useCreateShakeGameRecipe = (eventId: string) => {
-  const queryClient = useQueryClient();
+export const useCreateShakeGameRecipe = (_: string) => {
+  // const queryClient = useQueryClient();
   const { toast } = useToast();
   return useMutation({
     mutationFn: createGameRecipe,
-    onSuccess: (_, variables) => {
+    onSuccess: (_) => {
       toast({
         title: "Create recipes successfully!",
       });
