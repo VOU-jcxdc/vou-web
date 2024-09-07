@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetFile, useUploadFile } from "@/hooks/react-query/useBucket";
 import {
@@ -53,14 +54,14 @@ type ItemDialogContentProps = {
 
 function ItemImage({ bucketId }: { bucketId: string }) {
   const { data, isSuccess, isLoading, isError } = useGetFile(bucketId);
-  if (isLoading) return <Skeleton className="size-[8rem] rounded-full" />;
-  if (isError) return <CircleAlert className="h-10 w-10 text-muted-foreground" />;
+  if (isLoading) return <Skeleton className="size-[5rem] rounded-full" />;
+  if (isError) return <CircleAlert className="h-8 w-8 text-muted-foreground" />;
   if (isSuccess && data.url)
     return (
       <img
         src={data.url}
         alt={`Image ${bucketId}`}
-        className="size-[8rem] rounded-full object-cover"
+        className="size-[5rem] rounded-full object-cover"
       />
     );
   return null;
@@ -218,8 +219,9 @@ export default function ItemsSection() {
   };
   return (
     <div>
-      <strong>Items: </strong>
-      <div className="mt-2  grid grid-cols-3 gap-4">
+      <Separator orientation="horizontal" className="my-5" />
+      <h6 className="text-xl font-semibold">Items</h6>
+      <div className="mt-2  grid grid-cols-4 gap-4">
         {isError && <div>Error</div>}
         {isLoading && (
           <div className="grid min-h-[350px] place-items-center">
@@ -271,7 +273,7 @@ export default function ItemsSection() {
                   <div className="absolute right-0 top-0 bg-slate-600 px-2 py-1 text-xs text-white">
                     x{item.quantity}
                   </div>
-                  <CardHeader className="flex flex-col items-center gap-4">
+                  <CardHeader className="flex flex-col items-center gap-2 p-4">
                     <ItemImage bucketId={item.imageId} />
                     <CardTitle className="text-center text-base">{item.name}</CardTitle>
                   </CardHeader>
