@@ -19,9 +19,10 @@ export const Route = createFileRoute("/_authenticated")({
     }
     const user = await queryClient?.ensureQueryData({
       queryKey: authKeys.detail(),
-      queryFn: () => getAuthUser(),
+      queryFn: getAuthUser,
       staleTime: Infinity,
     });
+    console.log(user);
     if (!user) {
       signOut();
       return redirect({ to: "/log-in" });
