@@ -17,11 +17,11 @@ import { Route as AuthenticationImport } from './routes/_authentication'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
 import { Route as AuthenticationSignUpImport } from './routes/_authentication/sign-up'
-import { Route as AuthenticationOtpImport } from './routes/_authentication/otp'
 import { Route as AuthenticationLogInImport } from './routes/_authentication/log-in'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedBrandImport } from './routes/_authenticated/_brand'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/_admin'
+import { Route as AuthenticatedBrandInsightsImport } from './routes/_authenticated/_brand/insights'
 import { Route as AuthenticatedBrandEventsIndexImport } from './routes/_authenticated/_brand/events/index'
 import { Route as AuthenticatedAdminUsersIndexImport } from './routes/_authenticated/_admin/users/index'
 import { Route as AuthenticatedAdminGamesIndexImport } from './routes/_authenticated/_admin/games/index'
@@ -31,6 +31,7 @@ import { Route as AuthenticatedAdminGamesGameIdImport } from './routes/_authenti
 import { Route as AuthenticatedBrandEventsEventIdEventIdImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId'
 import { Route as AuthenticatedBrandEventsEventIdEventIdIndexImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId/index'
 import { Route as AuthenticatedBrandEventsEventIdEventIdVouchersImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId/vouchers'
+import { Route as AuthenticatedBrandEventsEventIdEventIdInsightsImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId/insights'
 import { Route as AuthenticatedBrandEventsEventIdEventIdGameImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId/game'
 
 // Create Virtual Routes
@@ -61,11 +62,6 @@ const AuthenticationSignUpRoute = AuthenticationSignUpImport.update({
   getParentRoute: () => AuthenticationRoute,
 } as any)
 
-const AuthenticationOtpRoute = AuthenticationOtpImport.update({
-  path: '/otp',
-  getParentRoute: () => AuthenticationRoute,
-} as any)
-
 const AuthenticationLogInRoute = AuthenticationLogInImport.update({
   path: '/log-in',
   getParentRoute: () => AuthenticationRoute,
@@ -85,6 +81,13 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   id: '/_admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
+const AuthenticatedBrandInsightsRoute = AuthenticatedBrandInsightsImport.update(
+  {
+    path: '/insights',
+    getParentRoute: () => AuthenticatedBrandRoute,
+  } as any,
+)
 
 const AuthenticatedBrandEventsEventIdRoute =
   AuthenticatedBrandEventsEventIdImport.update({
@@ -146,6 +149,12 @@ const AuthenticatedBrandEventsEventIdEventIdVouchersRoute =
     getParentRoute: () => AuthenticatedBrandEventsEventIdEventIdRoute,
   } as any)
 
+const AuthenticatedBrandEventsEventIdEventIdInsightsRoute =
+  AuthenticatedBrandEventsEventIdEventIdInsightsImport.update({
+    path: '/insights',
+    getParentRoute: () => AuthenticatedBrandEventsEventIdEventIdRoute,
+  } as any)
+
 const AuthenticatedBrandEventsEventIdEventIdGameRoute =
   AuthenticatedBrandEventsEventIdEventIdGameImport.update({
     path: '/game',
@@ -198,13 +207,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticationLogInImport
       parentRoute: typeof AuthenticationImport
     }
-    '/_authentication/otp': {
-      id: '/_authentication/otp'
-      path: '/otp'
-      fullPath: '/otp'
-      preLoaderRoute: typeof AuthenticationOtpImport
-      parentRoute: typeof AuthenticationImport
-    }
     '/_authentication/sign-up': {
       id: '/_authentication/sign-up'
       path: '/sign-up'
@@ -218,6 +220,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/_brand/insights': {
+      id: '/_authenticated/_brand/insights'
+      path: '/insights'
+      fullPath: '/insights'
+      preLoaderRoute: typeof AuthenticatedBrandInsightsImport
+      parentRoute: typeof AuthenticatedBrandImport
     }
     '/_authenticated/_admin/games/$gameId': {
       id: '/_authenticated/_admin/games/$gameId'
@@ -282,6 +291,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBrandEventsEventIdEventIdGameImport
       parentRoute: typeof AuthenticatedBrandEventsEventIdEventIdImport
     }
+    '/_authenticated/_brand/events/$eventId/_$eventId/insights': {
+      id: '/_authenticated/_brand/events/$eventId/_$eventId/insights'
+      path: '/insights'
+      fullPath: '/events/$eventId/insights'
+      preLoaderRoute: typeof AuthenticatedBrandEventsEventIdEventIdInsightsImport
+      parentRoute: typeof AuthenticatedBrandEventsEventIdEventIdImport
+    }
     '/_authenticated/_brand/events/$eventId/_$eventId/vouchers': {
       id: '/_authenticated/_brand/events/$eventId/_$eventId/vouchers'
       path: '/vouchers'
@@ -310,6 +326,7 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedAdminUsersIndexRoute,
     }),
     AuthenticatedBrandRoute: AuthenticatedBrandRoute.addChildren({
+      AuthenticatedBrandInsightsRoute,
       AuthenticatedBrandEventsCreateRoute,
       AuthenticatedBrandEventsIndexRoute,
       AuthenticatedBrandEventsEventIdRoute:
@@ -317,6 +334,7 @@ export const routeTree = rootRoute.addChildren({
           AuthenticatedBrandEventsEventIdEventIdRoute:
             AuthenticatedBrandEventsEventIdEventIdRoute.addChildren({
               AuthenticatedBrandEventsEventIdEventIdGameRoute,
+              AuthenticatedBrandEventsEventIdEventIdInsightsRoute,
               AuthenticatedBrandEventsEventIdEventIdVouchersRoute,
               AuthenticatedBrandEventsEventIdEventIdIndexRoute,
             }),
@@ -327,7 +345,6 @@ export const routeTree = rootRoute.addChildren({
   }),
   AuthenticationRoute: AuthenticationRoute.addChildren({
     AuthenticationLogInRoute,
-    AuthenticationOtpRoute,
     AuthenticationSignUpRoute,
   }),
 })
@@ -357,7 +374,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authentication.tsx",
       "children": [
         "/_authentication/log-in",
-        "/_authentication/otp",
         "/_authentication/sign-up"
       ]
     },
@@ -375,6 +391,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_brand.tsx",
       "parent": "/_authenticated",
       "children": [
+        "/_authenticated/_brand/insights",
         "/_authenticated/_brand/events/create",
         "/_authenticated/_brand/events/",
         "/_authenticated/_brand/events/$eventId"
@@ -388,10 +405,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authentication/log-in.tsx",
       "parent": "/_authentication"
     },
-    "/_authentication/otp": {
-      "filePath": "_authentication/otp.tsx",
-      "parent": "/_authentication"
-    },
     "/_authentication/sign-up": {
       "filePath": "_authentication/sign-up.tsx",
       "parent": "/_authentication"
@@ -399,6 +412,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/_brand/insights": {
+      "filePath": "_authenticated/_brand/insights.tsx",
+      "parent": "/_authenticated/_brand"
     },
     "/_authenticated/_admin/games/$gameId": {
       "filePath": "_authenticated/_admin/games/$gameId.tsx",
@@ -436,12 +453,17 @@ export const routeTree = rootRoute.addChildren({
       "parent": "/_authenticated/_brand/events/$eventId",
       "children": [
         "/_authenticated/_brand/events/$eventId/_$eventId/game",
+        "/_authenticated/_brand/events/$eventId/_$eventId/insights",
         "/_authenticated/_brand/events/$eventId/_$eventId/vouchers",
         "/_authenticated/_brand/events/$eventId/_$eventId/"
       ]
     },
     "/_authenticated/_brand/events/$eventId/_$eventId/game": {
       "filePath": "_authenticated/_brand/events/$eventId/_$eventId/game.tsx",
+      "parent": "/_authenticated/_brand/events/$eventId/_$eventId"
+    },
+    "/_authenticated/_brand/events/$eventId/_$eventId/insights": {
+      "filePath": "_authenticated/_brand/events/$eventId/_$eventId/insights.tsx",
       "parent": "/_authenticated/_brand/events/$eventId/_$eventId"
     },
     "/_authenticated/_brand/events/$eventId/_$eventId/vouchers": {
