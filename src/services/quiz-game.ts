@@ -19,8 +19,8 @@ export const createQuestions = async (body: CreateQuestionsParams) => {
       .post(`quiz-game/questions`, {
         body: formData,
       })
-      .json<{ data: { QAs: QuizGameQuestion[] } }>()
-  ).data.QAs;
+      .json<{ data: QuizGameQuestion[] }>()
+  ).data;
 };
 
 export const getQuestions = async (eventId: string) => {

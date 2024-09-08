@@ -22,6 +22,10 @@ function EventDetailLayout() {
       href: `/events/${eventId}/game`,
       title: "Game",
     },
+    {
+      href: `/events/${eventId}/insights`,
+      title: "Insights",
+    },
   ];
   const {
     location: { pathname },
