@@ -10,7 +10,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "../useToast";
 import { eventKeys } from "./useEvents";
-import { createGameRecipe } from "@/services";
+import { createGameRecipe, getGameRecipe, Recipe } from "@/services";
 
 export const itemKeys = {
   key: (id: string) => [...eventKeys.detail(id), "items"],
@@ -95,12 +95,16 @@ export const useDeleteShakeGameItem = (eventId: string) => {
   });
 };
 
-export const useCreateShakeGameRecipe = (_: string) => {
-  // const queryClient = useQueryClient();
+export const useCreateShakeGameRecipe = (eventId: string) => {
+  const queryClient = useQueryClient();
   const { toast } = useToast();
   return useMutation({
     mutationFn: createGameRecipe,
-    onSuccess: (_) => {
+    onSuccess: (returnData) => {
+      queryClient.setQueryData(itemKeys.recipeList(eventId), (prev: Recipe[]) => [
+        ...prev,
+        returnData,
+      ]);
       toast({
         title: "Create recipes successfully!",
       });
@@ -112,5 +116,12 @@ export const useCreateShakeGameRecipe = (_: string) => {
         variant: "destructive",
       });
     },
+  });
+};
+
+export const useGetShakeGameRecipe = (eventId: string) => {
+  return useQuery({
+    queryKey: itemKeys.recipeList(eventId),
+    queryFn: () => getGameRecipe(eventId),
   });
 };

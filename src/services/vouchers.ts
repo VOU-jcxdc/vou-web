@@ -31,12 +31,13 @@ export const getVouchers = async (eventId: string) => {
   const data = (
     await api
       .get(`events/${eventId}/vouchers`)
-      .json<{ data: { quantity: number; voucher: Voucher }[] }>()
+      .json<{ data: { quantity: number; voucher: Voucher; id: string }[] }>()
   ).data;
   return data.map((item) => {
     return {
       ...item.voucher,
       quantity: item.quantity,
+      eventVoucherId: item.id,
     };
   });
 };
