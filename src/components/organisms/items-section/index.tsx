@@ -92,6 +92,7 @@ function ItemDialogContent({ item, onSubmit, onDelete }: ItemDialogContentProps)
     formState: { errors },
     reset,
     handleSubmit,
+    watch,
   } = form;
   useEffect(() => {
     if (files.length == 0) return;
@@ -113,9 +114,9 @@ function ItemDialogContent({ item, onSubmit, onDelete }: ItemDialogContentProps)
         <DialogHeader>Item details</DialogHeader>
       </DialogTitle>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-        {item?.imageId ? (
+        {watch("imageId") ? (
           <div className="grid w-full place-items-center">
-            <ItemImage bucketId={item.imageId} />
+            <ItemImage bucketId={watch("imageId")} />
           </div>
         ) : (
           !uploadFileMutation.isPending && <DropAndDragZone maxFiles={1} />
@@ -290,7 +291,7 @@ export default function ItemsSection() {
                 <div className="absolute right-0 top-0 bg-slate-600 px-2 py-1 text-xs text-white">
                   x{item.quantity}
                 </div>
-                <CardHeader>
+                <CardHeader className="flex flex-col items-center gap-2 p-4">
                   <ItemImage bucketId={item.imageId} />
                   <CardTitle className="text-center text-base">{item.name}</CardTitle>
                 </CardHeader>

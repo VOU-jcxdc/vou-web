@@ -46,6 +46,7 @@ function VouchersPage() {
       vouchers: newVouchers,
     });
     deletedVouchers &&
+      deletedVouchers.length > 0 &&
       deleteVoucherMutation.mutate({
         eventId,
         voucherIds: deletedVouchers.map((voucher) => voucher.id),
