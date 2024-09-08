@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 
-import { signIn, signOut, signUp } from "@/services/auth";
+import { getAuthUser, signIn, signOut, signUp } from "@/services/auth";
 
 import { useToast } from "../useToast";
 
@@ -15,8 +15,8 @@ export const useSignUp = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: signUp,
-    onSuccess: async () => {
-      await navigate({ to: "/users" });
+    onSuccess: () => {
+      navigate({ to: "/users" });
       toast({
         title: "Success",
         description: "You have successfully signed up",
@@ -35,10 +35,13 @@ export const useSignUp = () => {
 export const useSignIn = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: signIn,
-    onSuccess: async () => {
-      await navigate({ to: "/users" });
+    onSuccess: () => {
+      const authUser = getAuthUser();
+      queryClient.setQueryData(authKeys.detail(), authUser);
+      navigate({ to: "/users" });
       toast({
         title: "Success",
         description: "You have successfully logged in",
@@ -61,8 +64,8 @@ export const useSignOut = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: signOut,
-    onSuccess: async () => {
-      await navigate({ to: "/log-in" });
+    onSuccess: () => {
+      navigate({ to: "/log-in" });
       queryClient.clear();
     },
     onError: (error) => {
