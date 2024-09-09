@@ -21,7 +21,6 @@ import { Route as AuthenticationLogInImport } from './routes/_authentication/log
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedBrandImport } from './routes/_authenticated/_brand'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/_admin'
-import { Route as AuthenticatedBrandInsightsImport } from './routes/_authenticated/_brand/insights'
 import { Route as AuthenticatedBrandEventsIndexImport } from './routes/_authenticated/_brand/events/index'
 import { Route as AuthenticatedAdminUsersIndexImport } from './routes/_authenticated/_admin/users/index'
 import { Route as AuthenticatedAdminGamesIndexImport } from './routes/_authenticated/_admin/games/index'
@@ -82,13 +81,6 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   id: '/_admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
-const AuthenticatedBrandInsightsRoute = AuthenticatedBrandInsightsImport.update(
-  {
-    path: '/insights',
-    getParentRoute: () => AuthenticatedBrandRoute,
-  } as any,
-)
 
 const AuthenticatedBrandEventsEventIdRoute =
   AuthenticatedBrandEventsEventIdImport.update({
@@ -228,13 +220,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/_brand/insights': {
-      id: '/_authenticated/_brand/insights'
-      path: '/insights'
-      fullPath: '/insights'
-      preLoaderRoute: typeof AuthenticatedBrandInsightsImport
-      parentRoute: typeof AuthenticatedBrandImport
-    }
     '/_authenticated/_admin/games/$gameId': {
       id: '/_authenticated/_admin/games/$gameId'
       path: '/games/$gameId'
@@ -341,7 +326,6 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedAdminUsersIndexRoute,
     }),
     AuthenticatedBrandRoute: AuthenticatedBrandRoute.addChildren({
-      AuthenticatedBrandInsightsRoute,
       AuthenticatedBrandEventsCreateRoute,
       AuthenticatedBrandEventsIndexRoute,
       AuthenticatedBrandEventsEventIdRoute:
@@ -407,7 +391,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_brand.tsx",
       "parent": "/_authenticated",
       "children": [
-        "/_authenticated/_brand/insights",
         "/_authenticated/_brand/events/create",
         "/_authenticated/_brand/events/",
         "/_authenticated/_brand/events/$eventId"
@@ -428,10 +411,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
-    },
-    "/_authenticated/_brand/insights": {
-      "filePath": "_authenticated/_brand/insights.tsx",
-      "parent": "/_authenticated/_brand"
     },
     "/_authenticated/_admin/games/$gameId": {
       "filePath": "_authenticated/_admin/games/$gameId.tsx",
