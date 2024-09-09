@@ -81,21 +81,12 @@ const DropAndDragZoneGeneralFile = ({
     saveFiles(files);
   }, [files, saveFiles]);
 
-  // const removeFile = (name: string) => {
-  //   setFiles((files) => files.filter((file) => file.name !== name));
-  // };
-
-  // const removeAll = () => {
-  //   setFiles([]);
-  //   setRejected([]);
-  // };
-
   const removeRejected = (name: string) => {
     setRejected((files) => files.filter(({ file }) => file.name !== name));
   };
 
   return (
-    <form className="h-fit w-full">
+    <form className="h-fit">
       <div {...getRootProps({ className })}>
         <input className="" {...getInputProps({ name: "file" })} />
         <div

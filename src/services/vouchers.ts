@@ -15,6 +15,10 @@ export type Voucher = {
   usageMode: VoucherUsageMode;
 };
 
+export type EventVoucher = Voucher & {
+  eventVoucherId: string;
+};
+
 type CreateVouchersParams = {
   eventId: string;
   vouchers: Omit<Voucher, "id">[];
@@ -36,7 +40,6 @@ export const getVouchers = async (eventId: string) => {
   return data.map((item) => {
     return {
       ...item.voucher,
-      quantity: item.quantity,
       eventVoucherId: item.id,
     };
   });
