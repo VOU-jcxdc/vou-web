@@ -21,6 +21,7 @@ import { Route as AuthenticationLogInImport } from './routes/_authentication/log
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedBrandImport } from './routes/_authenticated/_brand'
 import { Route as AuthenticatedAdminImport } from './routes/_authenticated/_admin'
+import { Route as AuthenticatedAdminAdminInsightsImport } from './routes/_authenticated/_admin/adminInsights'
 import { Route as AuthenticatedBrandEventsIndexImport } from './routes/_authenticated/_brand/events/index'
 import { Route as AuthenticatedAdminUsersIndexImport } from './routes/_authenticated/_admin/users/index'
 import { Route as AuthenticatedAdminGamesIndexImport } from './routes/_authenticated/_admin/games/index'
@@ -81,6 +82,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminImport.update({
   id: '/_admin',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
+const AuthenticatedAdminAdminInsightsRoute =
+  AuthenticatedAdminAdminInsightsImport.update({
+    path: '/adminInsights',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 
 const AuthenticatedBrandEventsEventIdRoute =
   AuthenticatedBrandEventsEventIdImport.update({
@@ -220,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/_admin/adminInsights': {
+      id: '/_authenticated/_admin/adminInsights'
+      path: '/adminInsights'
+      fullPath: '/adminInsights'
+      preLoaderRoute: typeof AuthenticatedAdminAdminInsightsImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
     '/_authenticated/_admin/games/$gameId': {
       id: '/_authenticated/_admin/games/$gameId'
       path: '/games/$gameId'
@@ -319,6 +333,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
+      AuthenticatedAdminAdminInsightsRoute,
       AuthenticatedAdminGamesGameIdRoute,
       AuthenticatedAdminUsersUserIdRoute,
       AuthenticatedAdminUsersCreateRoute,
@@ -380,6 +395,7 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_admin.tsx",
       "parent": "/_authenticated",
       "children": [
+        "/_authenticated/_admin/adminInsights",
         "/_authenticated/_admin/games/$gameId",
         "/_authenticated/_admin/users/$userId",
         "/_authenticated/_admin/users/create",
@@ -411,6 +427,10 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/_authenticated/_admin/adminInsights": {
+      "filePath": "_authenticated/_admin/adminInsights.tsx",
+      "parent": "/_authenticated/_admin"
     },
     "/_authenticated/_admin/games/$gameId": {
       "filePath": "_authenticated/_admin/games/$gameId.tsx",
