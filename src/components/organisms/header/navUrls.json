@@ -10,6 +10,11 @@
     "permission": "admin"
   },
   {
+    "name": "Insights",
+    "url": "/adminInsights",
+    "permission":"admin"
+  },
+  {
     "name": "Events",
     "url": "/events",
     "permission": "brand"
