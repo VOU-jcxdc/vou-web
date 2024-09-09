@@ -26,6 +26,7 @@ import { Route as AuthenticatedBrandEventsIndexImport } from './routes/_authenti
 import { Route as AuthenticatedAdminUsersIndexImport } from './routes/_authenticated/_admin/users/index'
 import { Route as AuthenticatedAdminGamesIndexImport } from './routes/_authenticated/_admin/games/index'
 import { Route as AuthenticatedBrandEventsCreateImport } from './routes/_authenticated/_brand/events/create'
+import { Route as AuthenticatedAdminUsersCreateImport } from './routes/_authenticated/_admin/users/create'
 import { Route as AuthenticatedAdminUsersUserIdImport } from './routes/_authenticated/_admin/users/$userId'
 import { Route as AuthenticatedAdminGamesGameIdImport } from './routes/_authenticated/_admin/games/$gameId'
 import { Route as AuthenticatedBrandEventsEventIdEventIdImport } from './routes/_authenticated/_brand/events/$eventId/_$eventId'
@@ -117,6 +118,12 @@ const AuthenticatedBrandEventsCreateRoute =
   AuthenticatedBrandEventsCreateImport.update({
     path: '/events/create',
     getParentRoute: () => AuthenticatedBrandRoute,
+  } as any)
+
+const AuthenticatedAdminUsersCreateRoute =
+  AuthenticatedAdminUsersCreateImport.update({
+    path: '/users/create',
+    getParentRoute: () => AuthenticatedAdminRoute,
   } as any)
 
 const AuthenticatedAdminUsersUserIdRoute =
@@ -242,6 +249,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminUsersUserIdImport
       parentRoute: typeof AuthenticatedAdminImport
     }
+    '/_authenticated/_admin/users/create': {
+      id: '/_authenticated/_admin/users/create'
+      path: '/users/create'
+      fullPath: '/users/create'
+      preLoaderRoute: typeof AuthenticatedAdminUsersCreateImport
+      parentRoute: typeof AuthenticatedAdminImport
+    }
     '/_authenticated/_brand/events/create': {
       id: '/_authenticated/_brand/events/create'
       path: '/events/create'
@@ -322,6 +336,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAdminRoute: AuthenticatedAdminRoute.addChildren({
       AuthenticatedAdminGamesGameIdRoute,
       AuthenticatedAdminUsersUserIdRoute,
+      AuthenticatedAdminUsersCreateRoute,
       AuthenticatedAdminGamesIndexRoute,
       AuthenticatedAdminUsersIndexRoute,
     }),
@@ -383,6 +398,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_admin/games/$gameId",
         "/_authenticated/_admin/users/$userId",
+        "/_authenticated/_admin/users/create",
         "/_authenticated/_admin/games/",
         "/_authenticated/_admin/users/"
       ]
@@ -423,6 +439,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/_admin/users/$userId": {
       "filePath": "_authenticated/_admin/users/$userId.tsx",
+      "parent": "/_authenticated/_admin"
+    },
+    "/_authenticated/_admin/users/create": {
+      "filePath": "_authenticated/_admin/users/create.tsx",
       "parent": "/_authenticated/_admin"
     },
     "/_authenticated/_brand/events/create": {

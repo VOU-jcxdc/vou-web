@@ -1,10 +1,9 @@
 import { Card } from "@/components/ui/card";
 import { Recipe } from "@/services";
 import { ShakeGameItem } from "@/services/items";
-import { EventVoucher, Voucher } from "@/services/vouchers";
+import { EventVoucher } from "@/services/vouchers";
 import { Equal, Plus } from "lucide-react";
 import { useMemo } from "react";
-
 
 interface RecipeItemProps {
   recipe: Recipe;
