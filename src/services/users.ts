@@ -46,6 +46,14 @@ export type User = UserBrand | UserPlayer | UserAdmin;
 
 export type UpdateUserParams = Partial<User>;
 
+export type CreateUserParams = {
+  username: string;
+  phone: string;
+  email: string;
+  role: "admin";
+  password: string;
+};
+
 export const getUsers = async (params: PagingSchema) => {
   const searchParams = generateSearchParams(fromPageToOffset(params));
   return (
@@ -71,4 +79,8 @@ export const getUserProfile = async () => {
 
 export const updateUserProfile = async (params: UpdateUserParams) => {
   return (await api.put(`user/profile`, { json: params }).json<{ data: User }>()).data;
+};
+
+export const createAdmin = async (params: CreateUserParams) => {
+  return (await api.post("admin/user", { json: params }).json<{ data: UserAdmin }>()).data;
 };

@@ -15,6 +15,10 @@ export type Voucher = {
   usageMode: VoucherUsageMode;
 };
 
+export type EventVoucher = Voucher & {
+  eventVoucherId: string;
+};
+
 type CreateVouchersParams = {
   eventId: string;
   vouchers: Omit<Voucher, "id">[];

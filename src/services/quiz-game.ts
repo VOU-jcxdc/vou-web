@@ -26,3 +26,7 @@ export const createQuestions = async (body: CreateQuestionsParams) => {
 export const getQuestions = async (eventId: string) => {
   return (await api.get(`events/${eventId}/questions`).json<{ data: QuizGameQuestion[] }>()).data;
 };
+
+export const createRoomGame = async (body: { eventId: string }) => {
+  return (await api.post(`quiz-game/room-game`, { json: body }).json<{ data: any }>()).data;
+};

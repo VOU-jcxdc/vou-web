@@ -31,11 +31,12 @@ import { bucketKeys, useGetFile, useUploadFile } from "@/hooks/react-query/useBu
 import { userKeys, useUpdateUser } from "@/hooks/react-query/useUsers";
 import useFiles from "@/hooks/zustand/useFiles";
 import { User, UserAdmin } from "@/services/users";
+import { Role } from "@/types/enums";
 
 const formSchema = z.object({
   username: z.string().trim().min(1, "Username cannot be empty"),
   phone: z.string().trim().min(1, "Phone cannot be empty"),
-  role: z.enum(["admin"]),
+  role: z.enum([Role.ADMIN]),
   email: z.string().email(),
 });
 type FormInputs = z.infer<typeof formSchema>;
@@ -45,7 +46,7 @@ export default function AdminForm({ user }: { user: UserAdmin }) {
     defaultValues: {
       username: user.username,
       phone: user.phone,
-      role: user.role,
+      role: Role.ADMIN,
       email: user.email,
     },
     resolver: zodResolver(formSchema),

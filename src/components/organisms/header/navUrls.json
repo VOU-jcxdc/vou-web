@@ -18,10 +18,5 @@
     "name": "Events",
     "url": "/events",
     "permission": "brand"
-  },
-  {
-    "name": "Insights",
-    "url": "/insights",
-    "permission":"brand"
   }
 ]

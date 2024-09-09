@@ -51,12 +51,12 @@ export default function AddRecipeDialog() {
   const form = useForm<RecipeSchema>({
     resolver: zodResolver(recipeSchema),
   });
-  const { control, setValue, getValues, register, watch } = form;
+  const { control, setValue, getValues, register, watch, reset } = form;
   const { data: items, isLoading: isLoadingItems } = useGetShakeGameItems(eventId);
   const { data: vouchers, isLoading: isLoadingVouchers } = useGetVouchers(eventId);
   const { fields, append } = useFieldArray({ control, name: "itemRecipe" });
   const selectedVoucher = useMemo(() => {
-    return vouchers ? vouchers.find((vou) => vou.id == watch("targetId")) : null;
+    return vouchers ? vouchers.find((vou) => vou.eventVoucherId == watch("targetId")) : null;
   }, [watch("targetId")]);
   const createRecipeMutation = useCreateShakeGameRecipe(eventId);
   const [open, setOpen] = useState(false);
@@ -66,17 +66,19 @@ export default function AddRecipeDialog() {
         <Loader className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
+
   return (
     <Dialog
       open={open}
       onOpenChange={(open) => {
         setOpen(open);
+        reset();
       }}
     >
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="flex min-h-36 w-full flex-col gap-2 text-muted-foreground hover:shadow-lg"
+          className="flex min-h-36 w-full flex-col gap-2 text-muted-foreground hover:shadow-2xl"
         >
           <PlusCircle size={48} />
           Add new recipe
@@ -87,7 +89,7 @@ export default function AddRecipeDialog() {
           <DialogTitle>Add new recipe</DialogTitle>
         </DialogHeader>
         <div className="grid place-items-center">
-          <div className="grid max-w-lg flex-1 grid-cols-[30%_5%_30%_5%_30%] items-center justify-items-center gap-4">
+          <div className="min-w-2xl grid max-w-2xl flex-1 grid-cols-[6fr_48px_6fr_48px_6fr] place-items-center items-center justify-items-center gap-4">
             <Form {...form}>
               {fields.map((field, index) => (
                 <>
@@ -176,7 +178,7 @@ export default function AddRecipeDialog() {
               ))}
               {fields.length < 2 && (
                 <Card
-                  className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-lg"
+                  className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-2xl"
                   onClick={() => append({ itemId: "", quantity: 1 })}
                 >
                   Add ingredient
@@ -190,7 +192,7 @@ export default function AddRecipeDialog() {
                 render={({ field }) => (
                   <DropdownMenu {...field}>
                     <DropdownMenuTrigger asChild>
-                      <Card className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-lg">
+                      <Card className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-2xl">
                         {selectedVoucher ? (
                           <>
                             <p className="text-black">{selectedVoucher.name}</p>
@@ -206,7 +208,9 @@ export default function AddRecipeDialog() {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
                       {vouchers?.map((voucher) => (
-                        <DropdownMenuItem onClick={() => setValue("targetId", voucher.id)}>
+                        <DropdownMenuItem
+                          onClick={() => setValue("targetId", voucher.eventVoucherId)}
+                        >
                           <div>
                             {voucher.name} &ensp;
                             <span className="italic">{voucher.code}</span>

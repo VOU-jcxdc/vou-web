@@ -1,20 +1,20 @@
 import { Card } from "@/components/ui/card";
 import { Recipe } from "@/services";
 import { ShakeGameItem } from "@/services/items";
-import { Voucher } from "@/services/vouchers";
+import { EventVoucher } from "@/services/vouchers";
 import { Equal, Plus } from "lucide-react";
 import { useMemo } from "react";
 
 interface RecipeItemProps {
   recipe: Recipe;
-  vouchers: Voucher[];
+  vouchers: EventVoucher[];
   items: ShakeGameItem[];
 }
 export default function RecipeItem({ recipe, vouchers, items }: RecipeItemProps) {
   const { itemRecipe, targetId } = recipe;
 
   const mappedVoucher = useMemo(() => {
-    return vouchers.find(({ id }) => targetId == id);
+    return vouchers.find(({ eventVoucherId }) => targetId == eventVoucherId);
   }, [vouchers, recipe]);
 
   return (
