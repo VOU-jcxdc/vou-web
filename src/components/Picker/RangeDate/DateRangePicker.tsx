@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import formatVNDate from "@/lib/utils/functions/formatVNDate";
 
 import { DateInput } from "./DateInput";
+import { TimeInput } from "./TimeInput";
 
 export interface DateRangePickerProps {
   /** Click handler for applying the updates from DateRangePicker. */
@@ -71,7 +72,7 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
 
   // Refs to store the values of range and rangeCompare when the date picker is opened
   const openedRangeRef = useRef<DateRange | undefined>();
-  const [selectedPreset, setSelectedPreset] = useState<string | undefined>(undefined);
+  const [selectedPreset] = useState<string | undefined>(undefined);
   const [isSmallScreen, setIsSmallScreen] = useState(
     typeof window !== "undefined" ? window.innerWidth < 960 : false
   );
@@ -146,30 +147,13 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
     setRange(range);
   };
 
-  const checkPreset = (): void => {
-    for (const preset of PRESETS) {
-      const presetRange = getPresetRange(preset.name);
+  // useEffect(() => {
+  //   console.log(range);
+  // }, [range]);
 
-      const normalizedRangeFrom = new Date(range.from.setHours(0, 0, 0, 0));
-      const normalizedPresetFrom = new Date(presetRange.from.setHours(0, 0, 0, 0));
-
-      const normalizedRangeTo = new Date(range.to?.setHours(0, 0, 0, 0) ?? 0);
-      const normalizedPresetTo = new Date(presetRange.to?.setHours(0, 0, 0, 0) ?? 0);
-
-      if (
-        normalizedRangeFrom.getTime() === normalizedPresetFrom.getTime() &&
-        normalizedRangeTo.getTime() === normalizedPresetTo.getTime()
-      ) {
-        setSelectedPreset(preset.name);
-        return;
-      }
-    }
-    setSelectedPreset(undefined);
-  };
-
-  useEffect(() => {
-    checkPreset();
-  }, [range]);
+  // useEffect(() => {
+  //   checkPreset();
+  // }, [range]);
 
   const PresetButton = ({
     preset,
@@ -253,6 +237,18 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                         }));
                       }}
                     />
+                    <TimeInput
+                      value={range.from}
+                      onChange={(time) => {
+                        const fromDate = range.from;
+                        fromDate.setHours(time.hour);
+                        fromDate.setMinutes(time.minute);
+                        setRange((prevRange) => ({
+                          ...prevRange,
+                          from: fromDate,
+                        }));
+                      }}
+                    />
                     <div className="py-1">-</div>
                     <DateInput
                       value={range.to}
@@ -262,6 +258,19 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
                           ...prevRange,
                           from: fromDate,
                           to: date,
+                        }));
+                      }}
+                    />
+
+                    <TimeInput
+                      value={range.to}
+                      onChange={(time) => {
+                        const toDate = range.to;
+                        toDate.setHours(time.hour);
+                        toDate.setMinutes(time.minute);
+                        setRange((prevRange) => ({
+                          ...prevRange,
+                          to: toDate,
                         }));
                       }}
                     />
@@ -332,10 +341,11 @@ export const DateRangePicker: FC<DateRangePickerProps> & {
           <Button
             className="text-background"
             onClick={() => {
-              setIsOpen(false);
+              console.log("Click", range);
               if (!areRangesEqual(range, openedRangeRef.current)) {
                 onUpdate?.(range);
               }
+              setIsOpen(false);
             }}
           >
             Select
