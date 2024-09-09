@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Minus, Plus, Equal, Ticket, PlusCircle, Loader } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
