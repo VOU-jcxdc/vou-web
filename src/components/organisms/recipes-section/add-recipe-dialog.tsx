@@ -66,15 +66,13 @@ export default function AddRecipeDialog() {
         <Loader className="h-10 w-10 animate-spin text-primary" />
       </div>
     );
-  useEffect(() => {
-    return () => reset();
-  }, []);
 
   return (
     <Dialog
       open={open}
       onOpenChange={(open) => {
         setOpen(open);
+        reset();
       }}
     >
       <DialogTrigger asChild>

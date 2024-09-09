@@ -3,9 +3,13 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart";
 import { Separator } from "@/components/ui/separator";
+import { useGetVouchers } from "@/hooks/react-query/useVouchers";
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/_brand/events/$eventId/_$eventId/insights")({
@@ -14,20 +18,27 @@ export const Route = createFileRoute("/_authenticated/_brand/events/$eventId/_$e
 
 const chartConfig = {
   default: {
-    label: "Voucher",
+    label: "Available vouchers",
     color: "#2563eb",
   },
 } satisfies ChartConfig;
 
-const chartData = [
-  { month: "January", default: 186 },
-  { month: "February", default: 305 },
-  { month: "March", default: 237 },
-  { month: "April", default: 73 },
-  { month: "May", default: 209 },
-  { month: "June", default: 214 },
-];
 function InsightsPage() {
+  const { eventId } = Route.useParams();
+
+  const { data: vouchers } = useGetVouchers(eventId);
+  const chartData = useMemo(() => {
+    if (vouchers) {
+      return vouchers.map((vou) => {
+        return {
+          voucher: vou.name,
+          default: vou.quantity,
+        };
+      });
+    }
+    return [];
+  }, vouchers);
+
   return (
     <>
       <div className="flex items-center justify-between">
@@ -38,14 +49,12 @@ function InsightsPage() {
         <BarChart accessibilityLayer data={chartData}>
           <CartesianGrid vertical={false} />
           <YAxis dataKey="default" />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={(value) => value.slice(0, 3)}
+          <XAxis dataKey="voucher" tickLine={false} tickMargin={10} />
+          <ChartLegend content={<ChartLegendContent />} />
+          <ChartTooltip
+            cursor={false}
+            content={<ChartTooltipContent indicator="dashed" className="min-w-20" />}
           />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="dashed" />} />
           <Bar dataKey="default" fill="var(--color-default)" radius={4} />
         </BarChart>
       </ChartContainer>

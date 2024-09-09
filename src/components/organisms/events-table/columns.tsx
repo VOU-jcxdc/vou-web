@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { Event } from "@/services/events";
+import { useGetGamesInSystem } from "@/hooks/react-query/useGames";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const statusVariants = cva("border", {
   variants: {
@@ -42,18 +44,27 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     accessorKey: "beginDate",
-    header: "Begin Date",
+    header: "Timeline",
     cell: ({ row }) => {
-      const event = row.original;
-      return moment(event.beginDate).calendar().split(" at")[0];
+      const { beginDate, endDate } = row.original;
+      return (
+        <div>
+          {moment(beginDate).calendar().split(" at")[0]} -{" "}
+          {moment(endDate).calendar().split(" at")[0]}
+        </div>
+      );
     },
   },
   {
-    accessorKey: "endDate",
-    header: "End Date",
+    accessorKey: "gameId",
+    header: "Game type",
     cell: ({ row }) => {
-      const event = row.original;
-      return moment(event.endDate).calendar().split(" at")[0];
+      const gameId = row.original.gameId;
+      const { data, isLoading, isSuccess } = useGetGamesInSystem();
+      if (isLoading) return <Skeleton className="h-5" />;
+      if (gameId && data && isSuccess)
+        return <div>{data.find((game) => game.id == gameId)?.name}</div>;
+      return <div>No game assigned</div>;
     },
   },
   {

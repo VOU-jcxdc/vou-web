@@ -21,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { Textarea } from "@/components/ui/textarea";
 import { Voucher } from "@/services/vouchers";
 import { VoucherType, VoucherTypeEnum } from "@/types/enums";
+import { getSecondsFromTime, getTimeFromSeconds } from "@/lib/utils/functions/formatDuration";
 
 type VoucherFormProps = {
   editMode?: boolean;
@@ -154,15 +155,27 @@ export default function VoucherForm({
               <FormField
                 control={form.control}
                 name="duration"
-                render={() => (
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Duration</FormLabel>
                     <FormControl>
                       <div className="flex items-center gap-4">
                         <Input
-                          {...form.register("duration", {
-                            valueAsNumber: true,
-                          })}
+                          // {...form.register("duration", {
+                          //   valueAsNumber: true,
+                          // })}
+                          onChange={(e) => {
+                            form.setValue(
+                              "duration",
+                              getSecondsFromTime({
+                                days: Number(e.target.value),
+                                hours: 0,
+                                minutes: 0,
+                                seconds: 0,
+                              })
+                            );
+                          }}
+                          value={getTimeFromSeconds(field.value).days}
                           type="number"
                           placeholder="Enter a duration time"
                           error={Boolean(errors.duration)}

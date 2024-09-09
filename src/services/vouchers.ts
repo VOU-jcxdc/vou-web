@@ -40,6 +40,7 @@ export const getVouchers = async (eventId: string) => {
   return data.map((item) => {
     return {
       ...item.voucher,
+      quantity: item.quantity,
       eventVoucherId: item.id,
     };
   });
