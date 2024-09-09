@@ -10,6 +10,11 @@ export type Recipe = {
   itemRecipe: ItemRecipe[];
   targetType: RecipeTarget;
   targetId: string;
+  target?: {
+    id: string;
+    name: string;
+    imageId: string;
+  };
 };
 export type CreateRecipeParams = Recipe;
 

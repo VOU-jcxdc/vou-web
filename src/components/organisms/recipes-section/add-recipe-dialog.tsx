@@ -58,6 +58,9 @@ export default function AddRecipeDialog() {
   const selectedVoucher = useMemo(() => {
     return vouchers ? vouchers.find((vou) => vou.eventVoucherId == watch("targetId")) : null;
   }, [watch("targetId")]);
+  const selectedItem = useMemo(() => {
+    return items ? items.find((vou) => vou.id == watch("targetId")) : null;
+  }, [watch("targetId")]);
   const createRecipeMutation = useCreateShakeGameRecipe(eventId);
   const [open, setOpen] = useState(false);
   if (isLoadingItems || isLoadingVouchers)
@@ -193,11 +196,13 @@ export default function AddRecipeDialog() {
                   <DropdownMenu {...field}>
                     <DropdownMenuTrigger asChild>
                       <Card className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center text-muted-foreground hover:shadow-2xl">
-                        {selectedVoucher ? (
+                        {selectedVoucher && watch("targetType") == RecipeTargetEnum.voucher ? (
                           <>
                             <p className="text-black">{selectedVoucher.name}</p>
                             <p className="mt-2 text-sm italic">Code: {selectedVoucher.code}</p>
                           </>
+                        ) : selectedItem && watch("targetType") == RecipeTargetEnum.item ? (
+                          <p className="text-black">{selectedItem.name}</p>
                         ) : (
                           <>
                             <Ticket size={24} />
@@ -209,11 +214,27 @@ export default function AddRecipeDialog() {
                     <DropdownMenuContent>
                       {vouchers?.map((voucher) => (
                         <DropdownMenuItem
-                          onClick={() => setValue("targetId", voucher.eventVoucherId)}
+                          onClick={() => {
+                            setValue("targetId", voucher.eventVoucherId);
+                            setValue("targetType", RecipeTargetEnum.voucher);
+                          }}
                         >
                           <div>
                             {voucher.name} &ensp;
                             <span className="italic">{voucher.code}</span>
+                          </div>
+                        </DropdownMenuItem>
+                      ))}
+                      {items?.map((item) => (
+                        <DropdownMenuItem
+                          onClick={() => {
+                            setValue("targetId", item.id);
+                            setValue("targetType", RecipeTargetEnum.item);
+                          }}
+                        >
+                          <div>
+                            <strong>Item: </strong>
+                            {item.name}
                           </div>
                         </DropdownMenuItem>
                       ))}
@@ -231,7 +252,6 @@ export default function AddRecipeDialog() {
                 {
                   ...getValues(),
                   eventId,
-                  targetType: RecipeTargetEnum.voucher,
                 },
                 {
                   onSuccess: () => {

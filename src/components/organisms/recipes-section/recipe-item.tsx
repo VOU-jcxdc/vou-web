@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Recipe } from "@/services";
 import { ShakeGameItem } from "@/services/items";
 import { EventVoucher } from "@/services/vouchers";
+import { RecipeTargetEnum } from "@/types/enums";
 import { Equal, Plus } from "lucide-react";
 import { useMemo } from "react";
 
@@ -35,8 +36,14 @@ export default function RecipeItem({ recipe, vouchers, items }: RecipeItemProps)
       <Equal className="text-muted-foreground" size={48} />
       <Card className="grid h-full min-h-20 w-full cursor-pointer place-items-center content-center ">
         <div>
-          <p>{mappedVoucher?.code ?? ""}</p>
-          <p className="text-sm italic text-muted-foreground">{mappedVoucher?.name ?? ""}</p>
+          {recipe.targetType == RecipeTargetEnum.voucher ? (
+            <>
+              <p>{mappedVoucher?.code ?? ""}</p>
+              <p className="text-sm italic text-muted-foreground">{mappedVoucher?.name ?? ""}</p>
+            </>
+          ) : (
+            <div>{recipe.target?.name}</div>
+          )}
         </div>
       </Card>
     </div>
