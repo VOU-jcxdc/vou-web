@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { Map, APIProvider, Marker } from "@vis.gl/react-google-maps";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -21,6 +22,7 @@ import { useSignUp } from "@/hooks/react-query/useAuth";
 import { BrandField } from "@/types/enums";
 
 import useSignUpStepper from "../../../hooks/useSignUpStepper";
+import PlaceAutocomplete from "@/components/molecules/place-autocomplete";
 
 const FormSchema = z.object({
   name: z.string().trim().min(1, { message: "Brand name is required" }).default(""),
@@ -44,12 +46,17 @@ const FormSchema = z.object({
     .default({ lat: 0, lng: 0 }),
 });
 
+const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_ID || "";
+const GG_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY || "";
+
 export default function BrandInfoForm() {
   const { accountIdentifier, reset, setBrandInfo } = useSignUpStepper();
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+  const { setValue, watch } = form;
+  const position = watch("location");
   const signUpMutation = useSignUp();
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
@@ -111,25 +118,30 @@ export default function BrandInfoForm() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Enter address"
-                      error={Boolean(form.formState.errors.address)}
-                      {...field}
-                      type="text"
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <FormLabel>Address</FormLabel>
+            <APIProvider apiKey={GG_MAP_API_KEY}>
+              <PlaceAutocomplete
+                onPlaceSelect={(value: google.maps.places.PlaceResult) => {
+                  setValue("location.lat", value.geometry?.location?.lat() ?? 0, {
+                    shouldDirty: true,
+                  });
+                  setValue("location.lng", value.geometry?.location?.lng() ?? 0, {
+                    shouldDirty: true,
+                  });
+                  setValue("address", value.formatted_address ?? "", { shouldDirty: true });
+                }}
+              />
+              <Map
+                className="h-40 w-full"
+                defaultCenter={position}
+                defaultZoom={15}
+                gestureHandling={"greedy"}
+                disableDefaultUI={true}
+                id={GOOGLE_MAP_ID}
+              >
+                <Marker position={position} />
+              </Map>
+            </APIProvider>
             <FormField
               control={form.control}
               name="field"

@@ -78,7 +78,7 @@ export const getUserProfile = async () => {
 };
 
 export const updateUserProfile = async (params: UpdateUserParams) => {
-  return (await api.put(`user/profile`, { json: params }).json<{ data: User }>()).data;
+  return (await api.put(`users/profile`, { json: params }).json<{ data: User }>()).data;
 };
 
 export const createAdmin = async (params: CreateUserParams) => {

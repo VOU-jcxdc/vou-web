@@ -222,13 +222,13 @@ export default function ItemsSection() {
     <div>
       <Separator orientation="horizontal" className="my-5" />
       <h6 className="text-xl font-semibold">Items</h6>
+      {isLoading && (
+        <div className="grid min-h-[350px] place-items-center">
+          <Loader className="h-10 w-10 animate-spin text-primary" />
+        </div>
+      )}
       <div className="mt-2  grid grid-cols-4 gap-4">
         {isError && <div>Error</div>}
-        {isLoading && (
-          <div className="grid min-h-[350px] place-items-center">
-            <Loader className="h-10 w-10 animate-spin text-primary" />
-          </div>
-        )}
         <Dialog
           open={itemDialog}
           onOpenChange={(open) => {
