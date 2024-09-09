@@ -3,6 +3,7 @@ import omit from "lodash.omit";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Map, APIProvider, Marker } from "@vis.gl/react-google-maps";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,21 +19,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/u
 import { useUpdateUserProfile } from "@/hooks/react-query/useUsers";
 import { User, UserBrand } from "@/services";
 import { BrandField } from "@/types/enums";
+import PlaceAutocomplete from "@/components/molecules/place-autocomplete";
+
+const GOOGLE_MAP_ID = import.meta.env.VITE_GOOGLE_MAP_ID || "";
+const GG_MAP_API_KEY = import.meta.env.VITE_GOOGLE_MAP_API_KEY || "";
 
 const formSchema = z.object({
   name: z.string().trim().min(1, { message: "Brand name is required" }).default(""),
   address: z.string().trim().min(1, { message: "Address is required" }).default(""),
-  field: z.enum([
-    BrandField.CAFE,
-    BrandField.FASHION,
-    BrandField.FnB,
-    BrandField.GAMES,
-    BrandField.HEALTH,
-    BrandField.LIFESTYLE,
-    BrandField.SPORTS,
-    BrandField.TECHNOLOGY,
-    BrandField.TRAVEL,
-  ]),
+  field: z.nativeEnum(BrandField),
   location: z
     .object({
       lat: z.number(),
@@ -47,8 +42,8 @@ export default function BrandForm({ user }: { user: UserBrand }) {
     defaultValues: {
       ...user.info,
       location: {
-        lat: user.info && "gps" in user.info ? user.info.gps.coordinates[1] : 0,
-        lng: user.info && "gps" in user.info ? user.info.gps.coordinates[0] : 0,
+        lat: user.info && "gps" in user.info ? user.info.gps.coordinates[0] : 0,
+        lng: user.info && "gps" in user.info ? user.info.gps.coordinates[1] : 0,
       },
     },
     resolver: zodResolver(formSchema),
@@ -57,7 +52,10 @@ export default function BrandForm({ user }: { user: UserBrand }) {
     handleSubmit,
     reset,
     formState: { errors, isDirty },
+    setValue,
+    watch,
   } = form;
+  const position = watch("location");
   const updateProfileMutation = useUpdateUserProfile();
   const onSubmit = (data: FormInputs) => {
     updateProfileMutation.mutate(
@@ -103,19 +101,6 @@ export default function BrandForm({ user }: { user: UserBrand }) {
         />
         <FormField
           control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Address</FormLabel>
-              <FormControl>
-                <Input {...field} error={Boolean(errors.address)} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="field"
           render={({ field }) => (
             <FormItem>
@@ -146,34 +131,29 @@ export default function BrandForm({ user }: { user: UserBrand }) {
             </FormItem>
           )}
         />
-        <div className="flex w-full gap-4">
-          <FormField
-            control={form.control}
-            name="location.lat"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Lat</FormLabel>
-                <FormControl>
-                  <Input {...field} error={Boolean(errors.location?.lat)} disabled />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+        <FormLabel>Address</FormLabel>
+        <APIProvider apiKey={GG_MAP_API_KEY}>
+          <PlaceAutocomplete
+            inputProps={{
+              defaultValue: user.info.address,
+            }}
+            onPlaceSelect={(value: google.maps.places.PlaceResult) => {
+              setValue("location.lat", value.geometry?.location?.lat() ?? 0, { shouldDirty: true });
+              setValue("location.lng", value.geometry?.location?.lng() ?? 0, { shouldDirty: true });
+              setValue("address", value.formatted_address ?? "", { shouldDirty: true });
+            }}
           />
-          <FormField
-            control={form.control}
-            name="location.lng"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Lng</FormLabel>
-                <FormControl>
-                  <Input {...field} error={Boolean(errors.location?.lng)} disabled />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+          <Map
+            className="h-40 w-full"
+            defaultCenter={position}
+            defaultZoom={15}
+            gestureHandling={"greedy"}
+            disableDefaultUI={true}
+            id={GOOGLE_MAP_ID}
+          >
+            <Marker position={position} />
+          </Map>
+        </APIProvider>
         <Button
           type="submit"
           className="w-fit"
