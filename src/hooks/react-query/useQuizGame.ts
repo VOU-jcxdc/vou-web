@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { eventKeys } from "./useEvents";
 import { useToast } from "../useToast";
-import { createQuestions, getQuestions } from "@/services/quiz-game";
+import { createQuestions, createRoomGame, getQuestions } from "@/services/quiz-game";
 
 export const quizGameKeys = {
   key: (eventId: string) => [...eventKeys.detail(eventId), "questions"],
@@ -32,5 +32,24 @@ export const useGetQuizGameQuestions = (eventId: string) => {
   return useQuery({
     queryKey: quizGameKeys.key(eventId),
     queryFn: () => getQuestions(eventId),
+  });
+};
+
+export const useCreateRoomGame = () => {
+  const { toast } = useToast();
+  return useMutation({
+    mutationFn: createRoomGame,
+    onSuccess: () => {
+      toast({
+        title: "Create room game successfully!",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to create room game",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
   });
 };
