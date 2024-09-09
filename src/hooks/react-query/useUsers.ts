@@ -1,9 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getUser, getUserProfile, getUsers, updateUser, updateUserProfile, User } from "@/services";
+import {
+  createAdmin,
+  getUser,
+  getUserProfile,
+  getUsers,
+  updateUser,
+  updateUserProfile,
+  User,
+} from "@/services";
 import { PagedData, PagingSchema } from "@/types";
 
 import { useToast } from "../useToast";
+import { useNavigate } from "@tanstack/react-router";
 
 export const userKeys = {
   key: ["users"] as const,
@@ -73,22 +82,6 @@ export const useUpdateUser = (id: string) => {
   });
 };
 
-// export const useUpdateAvatar = () => {
-//   const queryClient = useQueryClient();
-//   const { toast } = useToast();
-//   const changeAvatarMutation = useUploadFile();
-//   const mutate = (bucketId: string | null, file: File, ) => {
-//     if (bucketId)
-//       changeAvatarMutation.mutate({
-//         id: bucketId,
-//         filename: file.name,
-//         file
-//       }, {
-
-//       });
-//   };
-// };
-
 export const useGetUserProfile = () => {
   return useQuery({
     queryKey: userKeys.profile(),
@@ -112,6 +105,29 @@ export const useUpdateUserProfile = () => {
       toast({
         variant: "destructive",
         description: "Failed to update user profile!",
+      });
+    },
+  });
+};
+
+export const useCreateAdmin = () => {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: createAdmin,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: userKeys.lists() });
+      navigate({ to: "/users" });
+      toast({
+        title: "Create admin account successfully!",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Failed to create admin account!",
+        description: error.message,
+        variant: "destructive",
       });
     },
   });
